@@ -1,0 +1,50 @@
+services:
+  nuxt:
+    build:
+      context: .
+      dockerfile: nuxt/Dockerfile
+    depends_on:
+        - database
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DB: ${DB_NAME}
+    env_file:
+      - path: ./nuxt/.env
+        required: true
+    volumes:
+      - ../nuxt:/workspace
+      # Mount the SSH keys from the host to the container for git access
+      - ~/.ssh:/root/.ssh
+      # Mount the setup.sh script to the container
+      - ./nuxt/setup.sh:/root/setup.sh
+    ports:
+      - 3000:3000
+    networks:
+      - default
+    command: ["sleep", "infinity"]
+
+  database:
+    image: postgres:17.4
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - default
+
+volumes:
+  postgres-data:
+
+networks:
+  default:
+    name: devcontainer
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: devcontainer

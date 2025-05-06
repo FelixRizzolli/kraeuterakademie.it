@@ -1,0 +1,47 @@
+{
+    "name": "Dev Container - Nuxt",
+    "dockerComposeFile": "../compose.yml",
+    "service": "nuxt",
+    "shutdownAction": "none",
+
+    "remoteUser": "root",
+    "workspaceFolder": "/workspace",
+    
+    "forwardPorts": [
+        3000
+    ],
+
+    "remoteEnv": {
+        "VERCEL_TOKEN": "${localEnv:VERCEL_TOKEN}",
+        "TOKEN_GSAP": "${localEnv:TOKEN_GSAP}"
+    },
+
+    "postStartCommand": "chmod +x /root/setup.sh && bash /root/setup.sh",
+    
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "esbenp.prettier-vscode",
+                "cweijan.vscode-database-client2",
+                "cweijan.dbclient-jdbc",
+                "eamodio.gitlens",
+                "graphql.vscode-graphql",
+                "graphql.vscode-graphql-syntax",
+                "nuxtr.nuxt-vscode-extentions",
+                "formulahendry.auto-rename-tag",
+                "wix.vscode-import-cost",
+                "gruntfuggly.todo-tree",
+                "aaron-bond.better-comments",
+                "usernamehw.errorlens"
+            ],
+            "settings": {
+                "files.autoSave": "afterDelay",
+                "files.autoSaveDelay": 1000,
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "prettier.configPath": "/workspace/.prettierrc",
+                "prettier.ignorePath": "/workspace/.prettierignore"
+            }
+        }
+    }
+}
