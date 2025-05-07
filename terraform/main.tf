@@ -1,0 +1,38 @@
+resource "hcloud_server" "kraeuterakademie_node" {
+    count = 1
+    name = "kraeuterakademie-node"
+    image = "debian-12"
+    server_type = "cx22"
+    datacenter = "nbg1-dc3"
+    ssh_keys = ["terraform-ssh-key"]
+    public_net {
+        ipv4_enabled = true
+        ipv6_enabled = true
+    }
+
+    network {
+        network_id = hcloud_network.kraeuterakademie_k8s_network.id
+        ip = "172.16.0.100"
+    }
+
+    depends_on = [ 
+        hcloud_network_subnet.kraeuterakademie_k8s_subnet,
+    ]
+}
+
+resource "hcloud_network" "kraeuterakademie_k8s_network" {
+    name = "kraeuterakademie-k8s-network"
+    ip_range = "172.16.0.0/24"
+}
+
+resource "hcloud_network_subnet" "kraeuterakademie_k8s_subnet" {
+    type = "cloud"
+    network_id = hcloud_network.kraeuterakademie_k8s_network.id
+    network_zone = "eu-central"
+    ip_range = "172.16.0.0/24"
+}
+
+resource "hcloud_ssh_key" "default" {
+    name = "terraform-ssh-key"
+    public_key = file("~/.ssh/id_ed25519.pub")
+}
