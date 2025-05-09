@@ -8,7 +8,7 @@ services:
     networks:
       - default
     environment:
-      - STRAPI_API_URL=http://strapi:1337
+      - STRAPI_API_URL=${STRAPI_API_URL}
     depends_on:
       - strapi
 
@@ -28,10 +28,12 @@ services:
       - DATABASE_PORT=${DB_PORT}
       - DATABASE_USERNAME=${DB_USER}
       - DATABASE_PASSWORD=${DB_PASSWORD}
-      - JWT_SECRET=${STRAPI_JWT_SECRET}
-      - ADMIN_JWT_SECRET=${STRAPI_ADMIN_JWT_SECRET}
+      - HOST=${STRAPI_HOST}
       - APP_KEYS=${STRAPI_APP_KEYS}
       - API_TOKEN_SALT=${STRAPI_API_TOKEN_SALT}
+      - ADMIN_JWT_SECRET=${STRAPI_ADMIN_JWT_SECRET}
+      - JWT_SECRET=${STRAPI_JWT_SECRET}
+      - ENCRYPTION_KEY=${STRAPI_ENCRYPTION_KEY}
     depends_on:
       - database
     networks:
