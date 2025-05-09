@@ -1,0 +1,6 @@
+[submodule "strapi"]
+	path = strapi
+	url = https://github.com/FelixRizzolli/kraeuterakademie.it_strapi.git
+[submodule "nuxt"]
+	path = nuxt
+	url = https://github.com/FelixRizzolli/kraeuterakademie.it_nuxt.git
