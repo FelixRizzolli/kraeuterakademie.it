@@ -1,0 +1,61 @@
+services:
+  nuxt:
+    build:
+      context: ./nuxt
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - default
+    environment:
+      - STRAPI_API_URL=http://strapi:1337
+    depends_on:
+      - strapi
+
+  strapi:
+    build:
+      context: ./strapi
+      dockerfile: Dockerfile
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./strapi:/app
+    environment:
+      - NODE_ENV=production
+      - DATABASE_CLIENT=postgres
+      - DATABASE_NAME=${DB_NAME}
+      - DATABASE_HOST=database
+      - DATABASE_PORT=${DB_PORT}
+      - DATABASE_USERNAME=${DB_USER}
+      - DATABASE_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${STRAPI_JWT_SECRET}
+      - ADMIN_JWT_SECRET=${STRAPI_ADMIN_JWT_SECRET}
+      - APP_KEYS=${STRAPI_APP_KEYS}
+      - API_TOKEN_SALT=${STRAPI_API_TOKEN_SALT}
+    depends_on:
+      - database
+    networks:
+      - default
+
+  database:
+    image: postgres:17.4
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+
+volumes:
+  postgres-data:
+    driver: local
+
+networks:
+  default:
+    name: kraeuterakademie
+    driver: bridge
