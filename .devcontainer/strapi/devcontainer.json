@@ -1,7 +1,7 @@
 {
-    "name": "Dev Container - Nuxt",
+    "name": "Dev Container - Strapi",
     "dockerComposeFile": "../compose.yml",
-    "service": "nuxt",
+    "service": "strapi",
     "shutdownAction": "none",
 
     "remoteUser": "root",
@@ -22,7 +22,6 @@
                 "eamodio.gitlens",
                 "graphql.vscode-graphql",
                 "graphql.vscode-graphql-syntax",
-                "nuxtr.nuxt-vscode-extentions",
                 "formulahendry.auto-rename-tag",
                 "wix.vscode-import-cost",
                 "gruntfuggly.todo-tree",

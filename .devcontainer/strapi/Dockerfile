@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/typescript-node:22
 
-RUN echo "INSTALL NUXT IMAGE" && \
+RUN echo "INSTALL STRAPI IMAGE" && \
     # Disable Bash's bracket paste mode
     echo "bind 'set enable-bracket-paste off'" >> ~/.bashrc && \
     # Allways show hidden files in ls and colorize the output

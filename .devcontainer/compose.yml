@@ -25,6 +25,32 @@ services:
       - default
     command: ["sleep", "infinity"]
 
+  strapi:
+    build:
+      context: .
+      dockerfile: strapi/Dockerfile
+    depends_on:
+        - database
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DB: ${DB_NAME}
+    env_file:
+      - path: ./strapi/.env
+        required: true
+    volumes:
+      - ../strapi:/workspace
+      # Mount the SSH keys from the host to the container for git access
+      - ~/.ssh:/root/.ssh
+      # Mount the setup.sh script to the container
+      - ./strapi/setup.sh:/root/setup.sh
+    ports:
+      - 1337:1337
+    networks:
+      - default
+    command: ["sleep", "infinity"]
+
   database:
     image: postgres:17.4
     restart: always
