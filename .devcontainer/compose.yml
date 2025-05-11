@@ -14,7 +14,7 @@ services:
       - path: ./nuxt/.env
         required: true
     volumes:
-      - ../nuxt:/workspace
+      - ../:/workspace
       # Mount the SSH keys from the host to the container for git access
       - ~/.ssh:/root/.ssh
       # Mount the setup.sh script to the container
@@ -40,7 +40,7 @@ services:
       - path: ./strapi/.env
         required: true
     volumes:
-      - ../strapi:/workspace
+      - ../:/workspace
       # Mount the SSH keys from the host to the container for git access
       - ~/.ssh:/root/.ssh
       # Mount the setup.sh script to the container

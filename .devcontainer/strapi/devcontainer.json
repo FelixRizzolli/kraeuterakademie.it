@@ -5,7 +5,7 @@
     "shutdownAction": "none",
 
     "remoteUser": "root",
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/workspace/strapi",
     
     "forwardPorts": [
         3000
@@ -33,8 +33,8 @@
                 "files.autoSaveDelay": 1000,
                 "editor.formatOnSave": true,
                 "editor.defaultFormatter": "esbenp.prettier-vscode",
-                "prettier.configPath": "/workspace/.prettierrc",
-                "prettier.ignorePath": "/workspace/.prettierignore"
+                "prettier.configPath": "/workspace/strapi/.prettierrc",
+                "prettier.ignorePath": "/workspace/strapi/.prettierignore"
             }
         }
     }

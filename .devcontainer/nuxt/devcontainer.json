@@ -5,7 +5,7 @@
     "shutdownAction": "none",
 
     "remoteUser": "root",
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/workspace/nuxt",
     
     "forwardPorts": [
         3000
@@ -34,8 +34,8 @@
                 "files.autoSaveDelay": 1000,
                 "editor.formatOnSave": true,
                 "editor.defaultFormatter": "esbenp.prettier-vscode",
-                "prettier.configPath": "/workspace/.prettierrc",
-                "prettier.ignorePath": "/workspace/.prettierignore"
+                "prettier.configPath": "/workspace/nuxt/.prettierrc",
+                "prettier.ignorePath": "/workspace/nuxt/.prettierignore"
             }
         }
     }
