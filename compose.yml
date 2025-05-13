@@ -1,10 +1,33 @@
 services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=sigrid.thaler@gmail.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+
   nuxt:
     build:
       context: ./nuxt
       dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nuxt.rule=Host(`kraeuterakademie.it`,`www.kraeuterakademie.it`)"
+      - "traefik.http.routers.nuxt.entrypoints=websecure"
+      - "traefik.http.routers.nuxt.tls.certresolver=letsencrypt"
     ports:
-      - "80:80"
+      - "3000:3000"
     networks:
       - default
     environment:
@@ -16,6 +39,11 @@ services:
     build:
       context: ./strapi
       dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.strapi.rule=Host(`api.kraeuterakademie.it`)"
+      - "traefik.http.routers.strapi.entrypoints=websecure"
+      - "traefik.http.routers.strapi.tls.certresolver=letsencrypt"
     ports:
       - "1337:1337"
     volumes:
