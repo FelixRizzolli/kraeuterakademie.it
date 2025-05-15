@@ -46,6 +46,8 @@ services:
       - "traefik.http.routers.storybook.tls.certresolver=letsencrypt"
     ports:
       - "6006:6006"
+    networks:
+      - default
     
   strapi:
     build:

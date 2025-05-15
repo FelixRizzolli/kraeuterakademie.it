@@ -43,3 +43,6 @@ terraform.rc
 
 # pnpm
 .pnpm-store
+
+# traefik
+letsencrypt
