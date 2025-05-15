@@ -20,7 +20,7 @@ services:
   nuxt:
     build:
       context: ./nuxt
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.nuxt
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nuxt.rule=Host(`kraeuterakademie.it`,`www.kraeuterakademie.it`)"
@@ -35,6 +35,21 @@ services:
     depends_on:
       - strapi
 
+  storybook:
+    build:
+      context: ./nuxt
+      dockerfile: Dockerfile.storybook
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.storybook.rule=Host(`storybook.kraeuterakademie.it`)"
+      - "traefik.http.routers.storybook.entrypoints=websecure"
+      - "traefik.http.routers.storybook.tls.certresolver=letsencrypt"
+    ports:
+      - "6006:6006"
+    networks:
+      - default
+    environment:
+    
   strapi:
     build:
       context: ./strapi
