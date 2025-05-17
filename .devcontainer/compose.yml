@@ -6,10 +6,10 @@ services:
     depends_on:
         - database
     environment:
-      DB_HOST: ${DB_HOST}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_DB: ${DB_NAME}
+      DB_HOST: ${DATABASE_HOST}
+      DB_USER: ${DATABASE_USER}
+      DB_PASSWORD: ${DATABASE_PASSWORD}
+      DB_DB: ${DATABASE_NAME}
     env_file:
       - path: ./nuxt/.env
         required: true
@@ -32,10 +32,11 @@ services:
     depends_on:
         - database
     environment:
-      DB_HOST: ${DB_HOST}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_DB: ${DB_NAME}
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
     env_file:
       - path: ./strapi/.env
         required: true
@@ -55,9 +56,9 @@ services:
     image: postgres:17.4
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
