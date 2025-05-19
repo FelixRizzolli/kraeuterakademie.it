@@ -31,7 +31,7 @@ services:
     networks:
       - default
     environment:
-      - STRAPI_API_URL=${STRAPI_API_URL}
+      STRAPI_API_URL: ${STRAPI_API_URL}
     depends_on:
       - strapi
 
@@ -63,19 +63,20 @@ services:
     volumes:
       - ./strapi:/app
     environment:
-      - NODE_ENV=production
-      - DATABASE_CLIENT=postgres
-      - DATABASE_NAME=${DB_NAME}
-      - DATABASE_HOST=database
-      - DATABASE_PORT=${DB_PORT}
-      - DATABASE_USERNAME=${DB_USER}
-      - DATABASE_PASSWORD=${DB_PASSWORD}
-      - HOST=${STRAPI_HOST}
-      - APP_KEYS=${STRAPI_APP_KEYS}
-      - API_TOKEN_SALT=${STRAPI_API_TOKEN_SALT}
-      - ADMIN_JWT_SECRET=${STRAPI_ADMIN_JWT_SECRET}
-      - JWT_SECRET=${STRAPI_JWT_SECRET}
-      - ENCRYPTION_KEY=${STRAPI_ENCRYPTION_KEY}
+      NODE_ENV: production
+      HOST: ${STRAPI_HOST}
+      PORT: ${STRAPI_PORT}
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: database
+      DATABASE_PORT: ${DB_PORT}
+      DATABASE_NAME: ${DB_NAME}
+      DATABASE_USERNAME: ${DB_USER}
+      DATABASE_PASSWORD: ${DB_PASSWORD}
+      API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
+      APP_KEYS: ${STRAPI_APP_KEYS}
+      ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
+      JWT_SECRET: ${STRAPI_JWT_SECRET}
+      ENCRYPTION_KEY: ${STRAPI_ENCRYPTION_KEY}
     depends_on:
       - database
     networks:
