@@ -62,6 +62,7 @@ services:
       - "1337:1337"
     volumes:
       - ./strapi:/app
+      - strapi-uploads:/app/public/uploads
     environment:
       NODE_ENV: production
       HOST: ${STRAPI_HOST}
@@ -98,6 +99,8 @@ services:
 
 volumes:
   postgres-data:
+    driver: local
+  strapi-uploads:
     driver: local
 
 networks:
