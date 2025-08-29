@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/typescript-node:22
 
-RUN echo "INSTALL STRAPI IMAGE" && \
+RUN echo "INSTALL KRAEUTERAKADEMIE DEVCONTAINER IMAGE" && \
     # Disable Bash's bracket paste mode
     echo "bind 'set enable-bracket-paste off'" >> ~/.bashrc && \
     # Allways show hidden files in ls and colorize the output
@@ -17,3 +17,4 @@ RUN echo "INSTALL STRAPI IMAGE" && \
     apt-get install postgresql -y
 
 EXPOSE 3000
+EXPOSE 1337

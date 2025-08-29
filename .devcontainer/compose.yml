@@ -1,37 +1,10 @@
 services:
-  nuxt:
+  devcontainer:
     build:
       context: .
-      dockerfile: nuxt/Dockerfile
+      dockerfile: Dockerfile
     depends_on:
-        - database
-    environment:
-      DB_HOST: ${DATABASE_HOST}
-      DB_USER: ${DATABASE_USER}
-      DB_PASSWORD: ${DATABASE_PASSWORD}
-      DB_DB: ${DATABASE_NAME}
-      STRAPI_TOKEN: ${STRAPI_TOKEN}
-    env_file:
-      - path: ./nuxt/.env
-        required: true
-    volumes:
-      - ../:/workspace
-      # Mount the SSH keys from the host to the container for git access
-      - ~/.ssh:/root/.ssh
-      # Mount the setup.sh script to the container
-      - ./nuxt/setup.sh:/root/setup.sh
-    ports:
-      - 3000:3000
-    networks:
-      - default
-    command: ["sleep", "infinity"]
-
-  strapi:
-    build:
-      context: .
-      dockerfile: strapi/Dockerfile
-    depends_on:
-        - database
+      - database
     environment:
       API_TOKEN_SALT: ${STRAPI_TOKEN}
       HOST: ${STRAPI_HOST}
@@ -41,8 +14,13 @@ services:
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       DATABASE_NAME: ${DATABASE_NAME}
+      DB_HOST: ${DATABASE_HOST}
+      DB_USER: ${DATABASE_USER}
+      DB_PASSWORD: ${DATABASE_PASSWORD}
+      DB_DB: ${DATABASE_NAME}
+      STRAPI_TOKEN: ${STRAPI_TOKEN}
     env_file:
-      - path: ./strapi/.env
+      - path: ./.env
         required: true
     volumes:
       - ../:/workspace
@@ -52,6 +30,7 @@ services:
       - ./strapi/setup.sh:/root/setup.sh
     ports:
       - 1337:1337
+      - 3000:3000
     networks:
       - default
     command: ["sleep", "infinity"]
