@@ -36,7 +36,7 @@ services:
     command: ["sleep", "infinity"]
 
   database:
-    image: postgres:17.5
+    image: postgres:17.6
     restart: always
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
