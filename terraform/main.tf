@@ -11,23 +11,23 @@ resource "hcloud_server" "kraeuterakademie_node" {
     }
 
     network {
-        network_id = hcloud_network.kraeuterakademie_k8s_network.id
+        network_id = hcloud_network.kraeuterakademie_network.id
         ip = "172.16.0.100"
     }
 
     depends_on = [ 
-        hcloud_network_subnet.kraeuterakademie_k8s_subnet,
+        hcloud_network_subnet.kraeuterakademie_subnet,
     ]
 }
 
-resource "hcloud_network" "kraeuterakademie_k8s_network" {
-    name = "kraeuterakademie-k8s-network"
+resource "hcloud_network" "kraeuterakademie_network" {
+    name = "kraeuterakademie-network"
     ip_range = "172.16.0.0/24"
 }
 
-resource "hcloud_network_subnet" "kraeuterakademie_k8s_subnet" {
+resource "hcloud_network_subnet" "kraeuterakademie_subnet" {
     type = "cloud"
-    network_id = hcloud_network.kraeuterakademie_k8s_network.id
+    network_id = hcloud_network.kraeuterakademie_network.id
     network_zone = "eu-central"
     ip_range = "172.16.0.0/24"
 }
