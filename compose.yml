@@ -62,7 +62,8 @@ services:
       - "1337:1337"
     volumes:
       - ./strapi:/app
-      - strapi-uploads:/app/public/uploads
+      # Persist uploads on host so they survive restarts and are visible for backups
+      - ./data/strapi-uploads:/opt/app/public/uploads
     environment:
       NODE_ENV: production
       HOST: ${STRAPI_HOST}
@@ -99,8 +100,6 @@ services:
 
 volumes:
   postgres-data:
-    driver: local
-  strapi-uploads:
     driver: local
 
 networks:
