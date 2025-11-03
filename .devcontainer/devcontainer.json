@@ -9,8 +9,6 @@
 
   "forwardPorts": [3000, 1337],
 
-  "postStartCommand": "chmod +x /root/setup.sh && bash /root/setup.sh",
-
   "customizations": {
     "vscode": {
       "extensions": [
