@@ -12,6 +12,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "mskelton.npm-outdated",
         "esbenp.prettier-vscode",
         "cweijan.vscode-database-client2",
         "cweijan.dbclient-jdbc",
