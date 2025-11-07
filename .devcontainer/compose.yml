@@ -25,9 +25,9 @@ services:
     volumes:
       - ../:/workspace
       # Mount the SSH keys from the host to the container for git access
-      - ~/.ssh:/root/.ssh
+      - ~/.ssh:/root/local-ssh
       # Mount the setup.sh script to the container
-      - ./strapi/setup.sh:/root/setup.sh
+      - ./setup.sh:/root/setup.sh
     ports:
       - 1337:1337
       - 3000:3000
