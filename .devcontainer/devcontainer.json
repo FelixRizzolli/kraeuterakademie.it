@@ -6,6 +6,8 @@
 
   "remoteUser": "root",
   "workspaceFolder": "/workspace",
+  
+  "postCreateCommand": "bash /root/setup.sh",
 
   "customizations": {
     "vscode": {
