@@ -6,6 +6,7 @@ services:
     depends_on:
       - database
     environment:
+      GH_TOKEN: ${GH_TOKEN}
       API_TOKEN_SALT: ${STRAPI_TOKEN}
       HOST: ${STRAPI_HOST}
       PORT: ${STRAPI_PORT}
