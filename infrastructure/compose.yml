@@ -85,7 +85,7 @@ services:
       - default
 
   database:
-    image: postgres:17.6
+    image: postgres:18
     restart: always
     environment:
       POSTGRES_USER: ${DATABASE_USER}
