@@ -7,8 +7,6 @@
   "remoteUser": "root",
   "workspaceFolder": "/workspace",
 
-  "forwardPorts": [3000, 1337],
-
   "customizations": {
     "vscode": {
       "extensions": [
@@ -33,6 +31,18 @@
         "prettier.configPath": "/workspace/strapi/.prettierrc",
         "prettier.ignorePath": "/workspace/strapi/.prettierignore"
       }
+    }
+  },
+
+  "forwardPorts": [3000, 1337],
+  "portsAttributes": {
+    "3000": {
+      "label": "Nuxt",
+      "onAutoForward": "notify"
+    },
+    "1337": {
+      "label": "Strapi",
+      "onAutoForward": "notify"
     }
   }
 }
