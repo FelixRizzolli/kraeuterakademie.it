@@ -19,7 +19,7 @@ services:
 
   nuxt:
     build:
-      context: ./nuxt
+      context: ../apps/nuxt
       dockerfile: Dockerfile.nuxt
     labels:
       - "traefik.enable=true"
@@ -37,7 +37,7 @@ services:
 
   storybook:
     build:
-      context: ./nuxt
+      context: ../apps/nuxt
       dockerfile: Dockerfile.storybook
     labels:
       - "traefik.enable=true"
@@ -51,7 +51,7 @@ services:
     
   strapi:
     build:
-      context: ./strapi
+      context: ../apps/strapi
       dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
@@ -61,9 +61,9 @@ services:
     ports:
       - "1337:1337"
     volumes:
-      - ./strapi:/app
+      - ../apps/strapi:/app
       # Persist uploads on host so they survive restarts and are visible for backups
-      - ./data/strapi-uploads:/opt/app/public/uploads
+      - ../data/strapi-uploads:/opt/app/public/uploads
     environment:
       NODE_ENV: production
       HOST: ${STRAPI_HOST}
