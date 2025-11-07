@@ -1,9 +1,8 @@
 # data
 data/
 
-# subprojects
-nuxt/
-strapi/
+# apps
+apps/
 
 # macOS
 .DS_Store

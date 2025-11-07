@@ -4,10 +4,10 @@
             "path": "./"
         },
         {
-            "path": "./nuxt"
+            "path": "./apps/nuxt"
         },
         {
-            "path": "./strapi"
+            "path": "./apps/strapi"
         }
     ]
 }
