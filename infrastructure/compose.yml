@@ -1,9 +1,9 @@
 # Base configuration - shared by all environments
 services:
   traefik:
-    image: traefik:v2.10
+    image: traefik:v3.6
     command:
-      - "--api.dashboard=true"
+      - "--dashboard=true"
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
