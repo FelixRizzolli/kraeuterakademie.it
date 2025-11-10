@@ -12,6 +12,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "hashicorp.terraform",
         "mskelton.npm-outdated",
         "esbenp.prettier-vscode",
         "cweijan.vscode-database-client2",
