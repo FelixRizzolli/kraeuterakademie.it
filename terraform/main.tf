@@ -2,7 +2,7 @@ resource "hcloud_server" "kraeuterakademie_node" {
     count = 1
     name = "kraeuterakademie-node"
     image = "debian-12"
-    server_type = "cx22"
+    server_type = "cx23"
     datacenter = "nbg1-dc3"
     ssh_keys = ["terraform-ssh-key"]
     public_net {
