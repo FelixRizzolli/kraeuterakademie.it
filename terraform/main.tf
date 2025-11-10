@@ -36,3 +36,9 @@ resource "hcloud_ssh_key" "default" {
     name = "terraform-ssh-key"
     public_key = file("~/.ssh/id_ed25519.pub")
 }
+
+resource "hcloud_volume" "kraeuterakademie_volume" {
+    name        = "kraeuterakademie-volume"
+    size        = 10
+    server_id = hcloud_server.kraeuterakademie_node[0].id
+}
