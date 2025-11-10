@@ -12,14 +12,18 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        /* monorepo */
         "hashicorp.terraform",
+        /* nuxt */
+        "nuxtr.nuxt-vscode-extentions",
+        "graphql.vscode-graphql",
+        "graphql.vscode-graphql-syntax",
+        /* general */
         "mskelton.npm-outdated",
         "esbenp.prettier-vscode",
         "cweijan.vscode-database-client2",
         "cweijan.dbclient-jdbc",
         "eamodio.gitlens",
-        "graphql.vscode-graphql",
-        "graphql.vscode-graphql-syntax",
         "formulahendry.auto-rename-tag",
         "wix.vscode-import-cost",
         "gruntfuggly.todo-tree",
