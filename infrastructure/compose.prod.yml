@@ -25,7 +25,7 @@ services:
           memory: 256M
 
   storybook:
-    image: ghcr.io/felixrizzolli/nuxt-storybook:${NUXT_VERSION:-latest}
+    image: ghcr.io/felixrizzolli/kraeuterakademie-it-storybook:${STORYBOOK_VERSION:-latest}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.storybook.rule=Host(`storybook.kraeuterakademie.it`)"
