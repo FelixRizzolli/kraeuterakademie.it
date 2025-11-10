@@ -1,8 +1,9 @@
+# Base configuration - shared by all environments
 services:
   traefik:
     image: traefik:v2.10
     command:
-      - "--api.insecure=true"
+      - "--api.dashboard=true"
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
@@ -16,58 +17,33 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
+    networks:
+      - kraeuterakademie
 
   nuxt:
-    build:
-      context: ../apps/nuxt
-      dockerfile: Dockerfile.nuxt
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nuxt.rule=Host(`kraeuterakademie.it`,`www.kraeuterakademie.it`)"
-      - "traefik.http.routers.nuxt.entrypoints=websecure"
-      - "traefik.http.routers.nuxt.tls.certresolver=letsencrypt"
-    ports:
-      - "3000:3000"
-    networks:
-      - default
+    image: ghcr.io/felixrizzolli/kraeuterakademie-it-nuxt:${NUXT_VERSION:-latest}
     environment:
       STRAPI_API_URL: ${STRAPI_API_URL}
-    depends_on:
-      - strapi
-
-  storybook:
-    build:
-      context: ../apps/nuxt
-      dockerfile: Dockerfile.storybook
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.storybook.rule=Host(`storybook.kraeuterakademie.it`)"
-      - "traefik.http.routers.storybook.entrypoints=websecure"
-      - "traefik.http.routers.storybook.tls.certresolver=letsencrypt"
-    ports:
-      - "6006:6006"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://${NUXT_HOST}:${NUXT_PORT}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
     networks:
-      - default
-    
+      - kraeuterakademie
+    depends_on:
+      strapi:
+        condition: service_healthy
+
   strapi:
-    build:
-      context: ../apps/strapi
-      dockerfile: Dockerfile
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.strapi.rule=Host(`api.kraeuterakademie.it`)"
-      - "traefik.http.routers.strapi.entrypoints=websecure"
-      - "traefik.http.routers.strapi.tls.certresolver=letsencrypt"
-    ports:
-      - "1337:1337"
-    volumes:
-      - ../apps/strapi:/app
-      # Persist uploads on host so they survive restarts and are visible for backups
-      - ../data/strapi-uploads:/opt/app/public/uploads
+    image: ghcr.io/felixrizzolli/kraeuterakademie-it-strapi:${STRAPI_VERSION:-latest}
     environment:
-      NODE_ENV: production
+      NODE_ENV: ${NODE_ENV:-production}
       HOST: ${STRAPI_HOST}
       PORT: ${STRAPI_PORT}
+      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:${DATABASE_PORT}/${DATABASE_NAME}
       DATABASE_CLIENT: postgres
       DATABASE_HOST: database
       DATABASE_PORT: ${DATABASE_PORT}
@@ -79,30 +55,40 @@ services:
       ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
       JWT_SECRET: ${STRAPI_JWT_SECRET}
       ENCRYPTION_KEY: ${STRAPI_ENCRYPTION_KEY}
-    depends_on:
-      - database
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://${STRAPI_HOST}:${STRAPI_PORT}/_health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
     networks:
-      - default
+      - kraeuterakademie
+    depends_on:
+      database:
+        condition: service_healthy
 
   database:
     image: postgres:18
-    restart: always
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
+      PGOPTIONS: "-c log_statement=all -c log_connections=on -c log_disconnections=on"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
     networks:
-      - default
+      - kraeuterakademie
 
 volumes:
   postgres-data:
-    driver: local
 
 networks:
-  default:
-    name: kraeuterakademie
+  kraeuterakademie:
     driver: bridge
