@@ -9,5 +9,16 @@
         {
             "path": "./apps/strapi"
         }
-    ]
+    ],
+    "settings": {
+        "terminal.integrated.profiles.linux": {
+            "SSH kraeuterakademie production": {
+                "path": "/usr/bin/ssh",
+                "args": [
+                    "root@157.90.112.11"
+                ],
+                "icon": "server"
+            },
+        }
+    }
 }
