@@ -1,12 +1,19 @@
 {
     "folders": [
         {
+            "name": "Project",
             "path": "./"
         },
         {
+            "name": "Terraform",
+            "path": "./terraform"
+        },
+        {
+            "name": "Nuxt",
             "path": "./apps/nuxt"
         },
         {
+            "name": "Strapi",
             "path": "./apps/strapi"
         }
     ],
