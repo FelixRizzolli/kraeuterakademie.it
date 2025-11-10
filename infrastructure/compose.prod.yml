@@ -43,10 +43,12 @@ services:
       - "traefik.http.routers.strapi.tls.certresolver=letsencrypt"
       - "traefik.http.services.strapi.loadbalancer.server.port=1337"
     volumes:
-      - ./data/strapi-uploads:/opt/app/public/uploads
+      - strapi-uploads:/opt/app/public/uploads
     deploy:
       resources:
         limits:
           memory: 768M
         reservations:
           memory: 512M
+    environment:
+      ENVIRONMENT: production
