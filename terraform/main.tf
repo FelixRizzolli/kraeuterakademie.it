@@ -40,5 +40,7 @@ resource "hcloud_ssh_key" "default" {
 resource "hcloud_volume" "kraeuterakademie_volume" {
     name        = "kraeuterakademie-volume"
     size        = 10
-    server_id = hcloud_server.kraeuterakademie_node[0].id
+    server_id   = hcloud_server.kraeuterakademie_node[0].id
+    automount   = true
+    format      = "ext4"
 }
