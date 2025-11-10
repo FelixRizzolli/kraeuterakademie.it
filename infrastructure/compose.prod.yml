@@ -13,14 +13,10 @@ services:
   nuxt:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nuxt.rule=Host(`kraeuterakademie.it`)"
+      - "traefik.http.routers.nuxt.rule=Host(`kraeuterakademie.it`) || Host(`www.kraeuterakademie.it`)"
       - "traefik.http.routers.nuxt.entrypoints=websecure"
       - "traefik.http.routers.nuxt.tls.certresolver=letsencrypt"
       - "traefik.http.services.nuxt.loadbalancer.server.port=3000"
-      - "traefik.http.routers.nuxt-www.rule=Host(`www.kraeuterakademie.it`)"
-      - "traefik.http.routers.nuxt-www.entrypoints=websecure"
-      - "traefik.http.routers.nuxt-www.tls.certresolver=letsencrypt"
-      - "traefik.http.services.nuxt-www.loadbalancer.server.port=3000"
     deploy:
       resources:
         limits:
