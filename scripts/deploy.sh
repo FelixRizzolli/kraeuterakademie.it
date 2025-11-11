@@ -28,6 +28,8 @@ case $SERVICE in
   nuxt)
     docker compose -f compose.yml -f compose.prod.yml pull nuxt
     docker compose -f compose.yml -f compose.prod.yml up -d nuxt
+    docker compose -f compose.yml -f compose.prod.yml pull storybook
+    docker compose -f compose.yml -f compose.prod.yml up -d storybook
     ;;
   strapi)
     docker compose -f compose.yml -f compose.prod.yml pull strapi
