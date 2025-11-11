@@ -25,8 +25,6 @@ services:
         required: true
     volumes:
       - ../:/workspace
-      # Mount the SSH keys from the host to the container for git access
-      - ~/.ssh:/root/local-ssh
       # Mount the setup.sh script to the container
       - ./setup.sh:/root/setup.sh
     ports:

@@ -3,17 +3,6 @@ set -e
 
 echo "🚀 Setting up development environment..."
 
-# Copy SSH keys
-echo "🔑 Configuring SSH keys..."
-mkdir -p /root/.ssh
-cp -p /root/local-ssh/* /root/.ssh/
-
-echo "🔒 Setting SSH key permissions..."
-chmod 700 /root/.ssh
-chmod 600 /root/.ssh/*
-chmod 644 /root/.ssh/*.pub
-chown -R root:root /root/.ssh
-
 # Clone or pull nuxt project
 if [ ! -d "/workspace/apps/nuxt" ]; then
     echo "📦 Cloning Nuxt project..."
