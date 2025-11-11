@@ -1,26 +1,43 @@
-# Kräuterakademie.it
+# 🌿 Kräuterakademie.it - Monorepo
 
-Is the project of the [Kräuterakademie](https://www.kraeuterakademie.it/) Webapplication.
+kraeuterakademie.it is the homepage of Sigrid Thaler Rizolli and her company STR Kraeuterakademie. Initially, it serves as a presentation page for Sigrid and her courses. Planned future enhancements include:
 
-## Terraform
+- A management platform for Sigrid to simplify administrative tasks
+- A platform for course participants to view upcoming modules, access helpful quizzes, and study materials
+- Improved sharing of course information and content with participants
 
-This project uses Terraform to create a server in the Hetzner Cloud. At 
-the current state, Docker and the project itself have to be installed 
-and launched manually.
+## 🏗️ Architecture
 
-## Development Environment
+### Technical Project Overview
 
-The project uses a Visual Studio Code DevContainer for development. 
-Make sure you have the DevContainer extension installed in your VS Code 
-to get started.
+This project demonstrates a modern full-stack web architecture, optimized for maintainability, scalability, and developer experience:
 
-## Connecting to the Cloud Server
+- **Frontend: Nuxt 4**  
+	Utilizes Nuxt 4 for its robust SSR/SSG capabilities, modular architecture, and seamless TypeScript integration. Nuxt's ecosystem accelerates development of performant, SEO-friendly web applications.
 
-To connect to the cloud server, use the following SSH command:
+- **Backend: Strapi 5**  
+	Strapi 5 provides a flexible, headless CMS with a powerful REST/GraphQL API, enabling rapid content modeling and secure user management. Its plugin system and TypeScript support streamline backend customization.
 
-```bash
-ssh -i ~/.ssh/id_ed25519 root@157.90.112.11
+- **Infrastructure: Terraform**  
+	Infrastructure as Code is managed via Terraform, automating provisioning on Hetzner Cloud. This ensures reproducible, version-controlled deployments and simplifies scaling and maintenance.
+
+- **Development Environment: VSCode Devcontainer**  
+	The project leverages VSCode Devcontainer for consistent, containerized development environments. This eliminates "works on my machine" issues and speeds up onboarding and CI/CD integration.
+
+- **Production: Docker Compose & Traefik**  
+	Docker Compose orchestrates multi-service deployments, while Traefik acts as a dynamic reverse proxy and SSL manager. This combination enables zero-downtime deployments, secure routing, and simplified service discovery.
+
+### Project Structure
+
+```
+kraeuterakademie.it/
+├── apps/
+│   ├── nuxt/          # Frontend application
+│   └── strapi/        # Headless CMS backend
+├── infrastructure/    # Docker Compose for prod/staging
+├── terraform/         # Infrastructure as Code
+├── .devcontainer/     # Development environment
+└── scripts/           # Automation scripts for production
 ```
 
-Make sure to replace `~/.ssh/id_ed25519` with the path to your SSH key if 
-it's different.
+
