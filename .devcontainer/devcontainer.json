@@ -10,33 +10,51 @@
   "mounts": [
     "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind,consistency=cached"
   ],
-  
+
   "containerEnv": {
     "SSH_AUTH_SOCK": "/ssh-agent"
   },
-  
+
   "postCreateCommand": "bash /root/setup.sh",
 
   "customizations": {
     "vscode": {
       "extensions": [
-        /* monorepo */
+        /* Monorepo & Infrastructure */
         "hashicorp.terraform",
-        /* nuxt */
+        "ms-azuretools.vscode-docker",
+
+        /* Nuxt/Vue */
         "nuxtr.nuxt-vscode-extentions",
         "graphql.vscode-graphql",
         "graphql.vscode-graphql-syntax",
-        /* general */
-        "mskelton.npm-outdated",
+
+        /* Code Quality */
+        "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
+        "streetsidesoftware.code-spell-checker",
+        "EditorConfig.EditorConfig",
+
+        /* Testing */
+        "vitest.explorer",
+        "ms-playwright.playwright",
+
+        /* Productivity */
+        "eamodio.gitlens",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "usernamehw.errorlens",
+        "aaron-bond.better-comments",
+        "gruntfuggly.todo-tree",
+        "wix.vscode-import-cost",
+        "mskelton.npm-outdated",
+
+        /* Database */
         "cweijan.vscode-database-client2",
         "cweijan.dbclient-jdbc",
-        "eamodio.gitlens",
-        "formulahendry.auto-rename-tag",
-        "wix.vscode-import-cost",
-        "gruntfuggly.todo-tree",
-        "aaron-bond.better-comments",
-        "usernamehw.errorlens"
+
+        /* Git */
+        "mhutchie.git-graph"
       ]
     }
   },
