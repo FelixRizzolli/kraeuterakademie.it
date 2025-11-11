@@ -1,6 +1,6 @@
 # 🌿 Kräuterakademie.it - Monorepo
 
-kraeuterakademie.it is the homepage of Sigrid Thaler Rizolli and her company STR Kraeuterakademie. Initially, it serves as a presentation page for Sigrid and her courses. Planned future enhancements include:
+kraeuterakademie.it is the homepage of Sigrid Thaler Rizzolli and her company STR Kraeuterakademie. Initially, it serves as a presentation page for Sigrid and her courses. Planned future enhancements include:
 
 - A management platform for Sigrid to simplify administrative tasks
 - A platform for course participants to view upcoming modules, access helpful quizzes, and study materials
