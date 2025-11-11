@@ -2,12 +2,12 @@
 set -e
 
 usage() {
-  echo "Usage: $0 [nuxt-updated|strapi-updated|all]"
+  echo "Usage: $0 [nuxt|strapi|all]"
   echo "Deploys the specified service(s) via Docker Compose."
   echo ""
   echo "Examples:"
-  echo "  $0 nuxt-updated"
-  echo "  $0 strapi-updated"
+  echo "  $0 nuxt"
+  echo "  $0 strapi"
   echo "  $0 all"
   exit 1
 }
@@ -25,11 +25,11 @@ cd infrastructure
 source .env.prod
 
 case $SERVICE in
-  nuxt-updated)
+  nuxt)
     docker compose -f compose.yml -f compose.prod.yml pull nuxt
     docker compose -f compose.yml -f compose.prod.yml up -d nuxt
     ;;
-  strapi-updated)
+  strapi)
     docker compose -f compose.yml -f compose.prod.yml pull strapi
     docker compose -f compose.yml -f compose.prod.yml up -d strapi
     ;;

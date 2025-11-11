@@ -2,7 +2,7 @@ name: Automated Deployment
 
 on:
   repository_dispatch:
-    types: [nuxt-updated, strapi-updated]
+    types: [nuxt, strapi]
   workflow_dispatch:
     inputs:
       service:
