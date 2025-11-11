@@ -2,7 +2,7 @@ name: Automated Deployment
 
 on:
   repository_dispatch:
-    types: [nuxt, strapi]
+    types: [nuxt-updated, strapi-updated]
   workflow_dispatch:
     inputs:
       service:
@@ -26,7 +26,14 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script_stop: true
           script: |
-            bash /var/www/kraeuterakademie.it/scripts/deploy.sh "${{ github.event.action || inputs.service }}"
+            # Map event types nuxt-updated and strapi-updated to nuxt and strapi
+            SERVICE="${{ github.event.action || inputs.service }}"
+            if [ "$SERVICE" = "nuxt-updated" ]; then
+              SERVICE="nuxt"
+            elif [ "$SERVICE" = "strapi-updated" ]; then
+              SERVICE="strapi"
+            fi
+            bash /var/www/kraeuterakademie.it/scripts/deploy.sh "$SERVICE"
 
       - name: Health check
         run: |
