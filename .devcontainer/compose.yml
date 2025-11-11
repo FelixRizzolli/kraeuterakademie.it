@@ -7,6 +7,7 @@ services:
       - database
     environment:
       GH_TOKEN: ${GH_TOKEN}
+      HCLOUD_API_TOKEN: ${HCLOUD_API_TOKEN}
       API_TOKEN_SALT: ${STRAPI_TOKEN}
       HOST: ${STRAPI_HOST}
       PORT: ${STRAPI_PORT}
