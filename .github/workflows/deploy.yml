@@ -1,0 +1,35 @@
+name: Automated Deployment
+
+on:
+  repository_dispatch:
+    types: [nuxt-updated, strapi-updated]
+  workflow_dispatch:
+    inputs:
+      service:
+        type: choice
+        options: [all, nuxt, strapi, storybook]
+        default: all
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            bash /var/www/kraeuterakademie.it/scripts/deploy.sh "${{ github.event.action || inputs.service }}"
+
+      - name: Health check
+        run: |
+          sleep 30
+          curl -f https://kraeuterakademie.it || exit 1
+          curl -f https://api.kraeuterakademie.it/_health || exit 1
