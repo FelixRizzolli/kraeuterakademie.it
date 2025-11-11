@@ -40,7 +40,6 @@
         "ms-playwright.playwright",
 
         /* Productivity */
-        "eamodio.gitlens",
         "GitHub.copilot",
         "GitHub.copilot-chat",
         "usernamehw.errorlens",
@@ -54,6 +53,7 @@
         "cweijan.dbclient-jdbc",
 
         /* Git */
+        "eamodio.gitlens",
         "mhutchie.git-graph"
       ]
     }
