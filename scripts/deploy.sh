@@ -1,6 +1,22 @@
 #!/bin/bash
 set -e
 
+usage() {
+  echo "Usage: $0 [nuxt-updated|strapi-updated|all]"
+  echo "Deploys the specified service(s) via Docker Compose."
+  echo ""
+  echo "Examples:"
+  echo "  $0 nuxt-updated"
+  echo "  $0 strapi-updated"
+  echo "  $0 all"
+  exit 1
+}
+
+SERVICE="$1"
+if [[ "$SERVICE" == "-h" || "$SERVICE" == "--help" || -z "$SERVICE" ]]; then
+  usage
+fi
+
 cd /var/www/kraeuterakademie.it
 git pull origin main
 cd infrastructure
@@ -8,8 +24,6 @@ cd infrastructure
 # Load environment
 source .env.prod
 
-# Deploy based on trigger
-SERVICE="$1"
 case $SERVICE in
   nuxt-updated)
     docker compose -f compose.yml -f compose.prod.yml pull nuxt
@@ -22,6 +36,10 @@ case $SERVICE in
   all)
     docker compose -f compose.yml -f compose.prod.yml pull
     docker compose -f compose.yml -f compose.prod.yml up -d
+    ;;
+  *)
+    echo "Unknown service: $SERVICE"
+    usage
     ;;
 esac
 
