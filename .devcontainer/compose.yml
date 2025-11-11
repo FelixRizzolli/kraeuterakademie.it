@@ -8,19 +8,6 @@ services:
     environment:
       GH_TOKEN: ${GH_TOKEN}
       HCLOUD_API_TOKEN: ${HCLOUD_API_TOKEN}
-      API_TOKEN_SALT: ${STRAPI_TOKEN}
-      HOST: ${STRAPI_HOST}
-      PORT: ${STRAPI_PORT}
-      DATABASE_CLIENT: postgres
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DB_HOST: ${DATABASE_HOST}
-      DB_USER: ${DATABASE_USER}
-      DB_PASSWORD: ${DATABASE_PASSWORD}
-      DB_DB: ${DATABASE_NAME}
-      STRAPI_TOKEN: ${STRAPI_TOKEN}
     env_file:
       - path: ./.env
         required: true
