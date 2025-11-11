@@ -40,4 +40,28 @@ kraeuterakademie.it/
 └── scripts/           # Automation scripts for production
 ```
 
+## 🛠️ Development
 
+### Requirements
+
+- VSCode
+- Docker
+
+### Environment Variables
+
+- `GH_TOKEN` with access to `kraeuterakademie.it`, `kraeuterakademie.it_nuxt`, and `kraeuterakademie.it_strapi`
+- `HCLOUD_API_TOKEN` with access to the Hetzner Cloud API
+
+Both `GH_TOKEN` and `HCLOUD_API_TOKEN` are passed from your local environment to the devcontainer.
+
+### Getting Started
+
+The simplest way to develop in this project is to launch the VSCode devcontainer. It will install all required dependencies automatically.
+
+To run the frontend or backend services:
+
+- Open the Nuxt terminal and run:
+	- `pnpm devcontainer` to start the Nuxt frontend
+	- `pnpm storybook` to run Storybook
+- Open the Strapi terminal and run:
+	- `pnpm devcontainer` to start the Strapi CMS backend
