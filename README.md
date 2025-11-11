@@ -65,3 +65,33 @@ To run the frontend or backend services:
 	- `pnpm storybook` to run Storybook
 - Open the Strapi terminal and run:
 	- `pnpm devcontainer` to start the Strapi CMS backend
+
+
+## 🚀 Deployment
+
+Releases are automated via GitHub Actions:
+
+- When the package version of either the Strapi or Nuxt repository increases, a new tag and release are automatically created.
+- Upon release creation, another GitHub Action builds and deploys a new container for that version to the GitHub Container Repository.
+
+
+### Manual Update on Production
+
+To update the monorepo in production, connect to the Hetzner Cloud Server using SSH. The connection profile is available in the workspace as `SSH kraeuterakademie production`.
+
+Run the following commands:
+
+```bash
+cd /var/www/kraeuterakademie.it
+git pull
+```
+
+### Other Helpful Commands
+
+```bash
+sudo chmod +x setup.sh
+sudo chmod +x up_env.sh
+./scripts/setup.sh        # Setup utility scripts
+envup prod                # Start the production container
+```
+
