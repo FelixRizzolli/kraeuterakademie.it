@@ -10,6 +10,11 @@ on:
         options: [all, nuxt, strapi, storybook]
         default: all
 
+concurrency:
+  # Ensure only one run of this workflow executes at a time; subsequent runs will wait (queue)
+  group: deploy-${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
