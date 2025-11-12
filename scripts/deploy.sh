@@ -13,6 +13,7 @@ usage() {
 }
 
 SERVICE="$1"
+
 if [[ "$SERVICE" == "-h" || "$SERVICE" == "--help" || -z "$SERVICE" ]]; then
   usage
 fi
@@ -21,23 +22,26 @@ cd /var/www/kraeuterakademie.it
 git pull origin main
 cd infrastructure
 
-# Load environment
-source .env.prod
+ENV_FILE=".env.prod"
+if [ ! -f "$ENV_FILE" ]; then
+  echo "Env file not found: $ENV_FILE" >&2
+  exit 3
+fi
 
 case $SERVICE in
   nuxt)
-    docker compose -f compose.yml -f compose.prod.yml pull nuxt
-    docker compose -f compose.yml -f compose.prod.yml up -d nuxt
-    docker compose -f compose.yml -f compose.prod.yml pull storybook
-    docker compose -f compose.yml -f compose.prod.yml up -d storybook
+    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" pull nuxt
+    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" up -d nuxt
+    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" pull storybook
+    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" up -d storybook
     ;;
   strapi)
-    docker compose -f compose.yml -f compose.prod.yml pull strapi
-    docker compose -f compose.yml -f compose.prod.yml up -d strapi
+    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" pull strapi
+    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" up -d strapi
     ;;
   all)
-    docker compose -f compose.yml -f compose.prod.yml pull
-    docker compose -f compose.yml -f compose.prod.yml up -d
+    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" pull
+    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" up -d
     ;;
   *)
     echo "Unknown service: $SERVICE"
@@ -46,4 +50,4 @@ case $SERVICE in
 esac
 
 docker system prune -f
-docker compose -f compose.yml -f compose.prod.yml ps
+docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" ps
