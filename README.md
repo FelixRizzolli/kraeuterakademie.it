@@ -40,6 +40,12 @@ kraeuterakademie.it/
 └── scripts/           # Automation scripts for production
 ```
 
+#### Subprojects
+
+ - [kraeuterakademie.it_nuxt](https://github.com/FelixRizzolli/kraeuterakademie.it_nuxt) — Nuxt frontend source
+ - [kraeuterakademie.it_strapi](https://github.com/FelixRizzolli/kraeuterakademie.it_strapi) — Strapi backend source
+
+
 ## 🛠️ Development
 
 ### Requirements
