@@ -28,20 +28,23 @@ if [ ! -f "$ENV_FILE" ]; then
   exit 3
 fi
 
+
+COMPOSE_ARGS=("-f" "compose.yml" "-f" "compose.prod.yml" "--env-file" "$ENV_FILE")
+
 case $SERVICE in
   nuxt)
-    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" pull nuxt
-    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" up -d nuxt
-    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" pull storybook
-    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" up -d storybook
+    docker compose "${COMPOSE_ARGS[@]}" pull nuxt
+    docker compose "${COMPOSE_ARGS[@]}" up -d nuxt
+    docker compose "${COMPOSE_ARGS[@]}" pull storybook
+    docker compose "${COMPOSE_ARGS[@]}" up -d storybook
     ;;
   strapi)
-    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" pull strapi
-    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" up -d strapi
+    docker compose "${COMPOSE_ARGS[@]}" pull strapi
+    docker compose "${COMPOSE_ARGS[@]}" up -d strapi
     ;;
   all)
-    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" pull
-    docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" up -d
+    docker compose "${COMPOSE_ARGS[@]}" pull
+    docker compose "${COMPOSE_ARGS[@]}" up -d
     ;;
   *)
     echo "Unknown service: $SERVICE"
@@ -50,4 +53,4 @@ case $SERVICE in
 esac
 
 docker system prune -f
-docker compose -f compose.yml -f compose.prod.yml --env-file "$ENV_FILE" ps
+docker compose "${COMPOSE_ARGS[@]}" ps
