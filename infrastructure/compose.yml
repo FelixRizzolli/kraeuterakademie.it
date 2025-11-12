@@ -25,7 +25,15 @@ services:
     environment:
       STRAPI_API_URL: ${STRAPI_API_URL}
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://${NUXT_HOST}:${NUXT_PORT}"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://${NUXT_HOST}:${NUXT_PORT}",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -41,8 +49,8 @@ services:
     image: ghcr.io/felixrizzolli/kraeuterakademie-it-strapi:${STRAPI_VERSION:-latest}
     environment:
       NODE_ENV: ${NODE_ENV:-production}
-      HOST: ${STRAPI_HOST}
-      PORT: ${STRAPI_PORT}
+      STRAPI_HOST: ${STRAPI_HOST}
+      STRAPI_PORT: ${STRAPI_PORT}
       DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:${DATABASE_PORT}/${DATABASE_NAME}
       DATABASE_CLIENT: postgres
       DATABASE_HOST: database
@@ -50,13 +58,22 @@ services:
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USERNAME: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
-      APP_KEYS: ${STRAPI_APP_KEYS}
-      ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
-      JWT_SECRET: ${STRAPI_JWT_SECRET}
-      ENCRYPTION_KEY: ${STRAPI_ENCRYPTION_KEY}
+      STRAPI_APP_KEYS: ${STRAPI_APP_KEYS}
+      STRAPI_JWT_SECRET: ${STRAPI_JWT_SECRET}
+      STRAPI_ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
+      STRAPI_API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
+      STRAPI_TRANSFER_TOKEN_SALT: ${STRAPI_TRANSFER_TOKEN_SALT}
+      STRAPI_ENCRYPTION_KEY: ${STRAPI_ENCRYPTION_KEY}
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://${STRAPI_HOST}:${STRAPI_PORT}/_health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://${STRAPI_HOST}:${STRAPI_PORT}/_health",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
