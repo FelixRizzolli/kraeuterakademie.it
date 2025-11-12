@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-11-12
+
+### Added
+
+- add GitHubActions workflow for deploying the application to the Hetzner Cloud server using SSH and Docker Compose
+- add `deploy.sh` script for deploying the application to the Hetzner Cloud server
+
+### Changed
+
+- mention subprojects in README.md
+- update base image in Dockerfile from `typescript-node:22` to `typescript-node:24`
+- changed Strapi environment variable names in Docker Compose file
+
 ## [0.2.0] - 2025-11-11
 
 - Removed git submodules for Nuxt and Strapi to simplify repository management and improve developer experience.
