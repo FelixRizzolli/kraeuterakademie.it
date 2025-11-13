@@ -21,6 +21,16 @@ services:
       DATABASE_NAME: kraeuterakademie_staging
       ENVIRONMENT: staging
 
+  payload:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.payload-staging.rule=Host(`payload-staging.kraeuterakademie.it`)"
+      - "traefik.http.routers.payload-staging.entrypoints=websecure"
+      - "traefik.http.routers.payload-staging.tls.certresolver=letsencrypt"
+      - "traefik.http.services.payload-staging.loadbalancer.server.port=3001"
+    environment:
+      ENVIRONMENT: staging
+
   database:
     environment:
       POSTGRES_DB: kraeuterakademie_staging

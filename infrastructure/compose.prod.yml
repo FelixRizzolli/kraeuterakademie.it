@@ -52,3 +52,19 @@ services:
           memory: 512M
     environment:
       ENVIRONMENT: production
+
+  payload:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.payload.rule=Host(`payload.kraeuterakademie.it`)"
+      - "traefik.http.routers.payload.entrypoints=websecure"
+      - "traefik.http.routers.payload.tls.certresolver=letsencrypt"
+      - "traefik.http.services.payload.loadbalancer.server.port=3001"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    environment:
+      ENVIRONMENT: production

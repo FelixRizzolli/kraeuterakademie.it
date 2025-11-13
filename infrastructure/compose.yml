@@ -55,7 +55,7 @@ services:
       DATABASE_CLIENT: postgres
       DATABASE_HOST: database
       DATABASE_PORT: ${DATABASE_PORT}
-      DATABASE_NAME: ${DATABASE_NAME}
+      STRAPI_DATABASE_NAME: ${STRAPI_DATABASE_NAME}
       DATABASE_USERNAME: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       STRAPI_APP_KEYS: ${STRAPI_APP_KEYS}
@@ -85,15 +85,43 @@ services:
       database:
         condition: service_healthy
 
+    payload:
+      image: ghcr.io/felixrizzolli/kraeuterakademie-it-payload:${PAYLOAD_VERSION:-latest}
+      environment:
+        NODE_ENV: ${NODE_ENV:-production}
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+        PAYLOAD_DATABASE_URI: ${PAYLOAD_DATABASE_URI}
+      healthcheck:
+        test:
+          [
+            "CMD",
+            "wget",
+            "--no-verbose",
+            "--tries=1",
+            "--spider",
+            "http://localhost:3001/_health",
+          ]
+        interval: 30s
+        timeout: 10s
+        retries: 3
+        start_period: 60s
+      restart: unless-stopped
+      networks:
+        - kraeuterakademie
+      depends_on:
+        database:
+          condition: service_healthy
+
   database:
     image: postgres:18
     environment:
+      DATABASE_NAMES: ${DATABASE_NAMES}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
       PGOPTIONS: "-c log_statement=all -c log_connections=on -c log_disconnections=on"
     volumes:
       - postgres-data:/var/lib/postgresql
+      - ../scripts/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER}"]
       interval: 10s
