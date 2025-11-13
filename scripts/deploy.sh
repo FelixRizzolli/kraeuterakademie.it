@@ -2,12 +2,13 @@
 set -e
 
 usage() {
-  echo "Usage: $0 [nuxt|strapi|all]"
+  echo "Usage: $0 [nuxt|strapi|payload|all]"
   echo "Deploys the specified service(s) via Docker Compose."
   echo ""
   echo "Examples:"
   echo "  $0 nuxt"
   echo "  $0 strapi"
+  echo "  $0 payload"
   echo "  $0 all"
   exit 1
 }
@@ -41,6 +42,10 @@ case $SERVICE in
   strapi)
     docker compose "${COMPOSE_ARGS[@]}" pull strapi
     docker compose "${COMPOSE_ARGS[@]}" up -d strapi
+    ;;
+  payload)
+    docker compose "${COMPOSE_ARGS[@]}" pull payload
+    docker compose "${COMPOSE_ARGS[@]}" up -d payload
     ;;
   all)
     docker compose "${COMPOSE_ARGS[@]}" pull

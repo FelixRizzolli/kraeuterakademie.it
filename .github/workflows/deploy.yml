@@ -2,12 +2,12 @@ name: Automated Deployment
 
 on:
   repository_dispatch:
-    types: [nuxt-updated, strapi-updated]
+    types: [nuxt-updated, strapi-updated, payload-updated]
   workflow_dispatch:
     inputs:
       service:
         type: choice
-        options: [all, nuxt, strapi, storybook]
+        options: [all, nuxt, strapi, storybook, payload]
         default: all
 
 concurrency:
@@ -37,6 +37,8 @@ jobs:
               SERVICE="nuxt"
             elif [ "$SERVICE" = "strapi-updated" ]; then
               SERVICE="strapi"
+            elif [ "$SERVICE" = "payload-updated" ]; then
+              SERVICE="payload"
             fi
             bash /var/www/kraeuterakademie.it/scripts/deploy.sh "$SERVICE"
 
@@ -45,3 +47,5 @@ jobs:
           sleep 30
           curl -f https://kraeuterakademie.it || exit 1
           curl -f https://api.kraeuterakademie.it/_health || exit 1
+          curl -f https://strapi.kraeuterakademie.it/_health || exit 1
+          curl -f https://payload.kraeuterakademie.it/_health || exit 1
