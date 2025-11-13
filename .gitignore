@@ -3,6 +3,11 @@ infrastructure/.env.*
 
 # data
 data/
+!.devcontainer/data
+.devcontainer/data/postgres/*
+!.devcontainer/data/postgres/.gitkeep
+.devcontainer/data/strapi-uploads/*
+!.devcontainer/data/strapi-uploads/.gitkeep
 
 # apps
 apps/
