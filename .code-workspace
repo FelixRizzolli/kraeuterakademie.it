@@ -15,6 +15,10 @@
         {
             "name": "Strapi",
             "path": "./apps/strapi"
+        },
+        {
+            "name": "Payload",
+            "path": "./apps/payload"
         }
     ],
     "settings": {

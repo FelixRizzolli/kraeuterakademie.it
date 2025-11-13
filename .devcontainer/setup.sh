@@ -32,10 +32,12 @@ clone_repo() {
 
 clone_repo "kraeuterakademie.it_nuxt" "/workspace/apps/nuxt"
 clone_repo "kraeuterakademie.it_strapi" "/workspace/apps/strapi"
+clone_repo "kraeuterakademie.it_payload" "/workspace/apps/payload"
 
 # Install dependencies
 log_info "📦 Installing dependencies..."
 cd /workspace/apps/nuxt && pnpm install
 cd /workspace/apps/strapi && pnpm install
+cd /workspace/apps/payload && pnpm install
 
 log_info "✅ Setup completed successfully!"
