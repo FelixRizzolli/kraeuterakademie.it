@@ -85,32 +85,32 @@ services:
       database:
         condition: service_healthy
 
-    payload:
-      image: ghcr.io/felixrizzolli/kraeuterakademie-it-payload:${PAYLOAD_VERSION:-latest}
-      environment:
-        NODE_ENV: ${NODE_ENV:-production}
-        PAYLOAD_SECRET: ${PAYLOAD_SECRET}
-        PAYLOAD_DATABASE_URI: ${PAYLOAD_DATABASE_URI}
-      healthcheck:
-        test:
-          [
-            "CMD",
-            "wget",
-            "--no-verbose",
-            "--tries=1",
-            "--spider",
-            "http://localhost:3001/_health",
-          ]
-        interval: 30s
-        timeout: 10s
-        retries: 3
-        start_period: 60s
-      restart: unless-stopped
-      networks:
-        - kraeuterakademie
-      depends_on:
-        database:
-          condition: service_healthy
+  payload:
+    image: ghcr.io/felixrizzolli/kraeuterakademie-it-payload:${PAYLOAD_VERSION:-latest}
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+      PAYLOAD_DATABASE_URI: ${PAYLOAD_DATABASE_URI}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3001/_health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - kraeuterakademie
+    depends_on:
+      database:
+        condition: service_healthy
 
   database:
     image: postgres:18

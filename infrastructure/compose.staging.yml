@@ -18,7 +18,7 @@ services:
     volumes:
       - strapi-uploads:/opt/app/public/uploads
     environment:
-      DATABASE_NAME: kraeuterakademie_staging
+      STRAPI_DATABASE_NAME: kraeuterakademie_staging
       ENVIRONMENT: staging
 
   payload:
