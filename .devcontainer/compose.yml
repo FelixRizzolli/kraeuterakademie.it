@@ -29,11 +29,12 @@ services:
     image: postgres:18
     restart: always
     environment:
-      POSTGRES_DB: ${DATABASE_NAME}
+      DATABASE_NAMES: ${DATABASE_NAMES}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql
+      - ../scripts/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     ports:
       - 5432:5432
     networks:
