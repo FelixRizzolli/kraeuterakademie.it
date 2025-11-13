@@ -18,6 +18,9 @@ This project demonstrates a modern full-stack web architecture, optimized for ma
 - **Backend: Strapi 5**  
 	Strapi 5 provides a flexible, headless CMS with a powerful REST/GraphQL API, enabling rapid content modeling and secure user management. Its plugin system and TypeScript support streamline backend customization.
 
+- **Backend: Payload CMS**  
+	Payload CMS offers a modern, headless CMS solution with a focus on developer experience and extensibility. It supports REST and GraphQL APIs, custom admin interfaces, and robust access control.
+
 - **Infrastructure: Terraform**  
 	Infrastructure as Code is managed via Terraform, automating provisioning on Hetzner Cloud. This ensures reproducible, version-controlled deployments and simplifies scaling and maintenance.
 
@@ -34,6 +37,7 @@ kraeuterakademie.it/
 ├── apps/
 │   ├── nuxt/          # Frontend application
 │   └── strapi/        # Headless CMS backend
+│   └── payload/       # (NEXT) Headless CMS backend
 ├── infrastructure/    # Docker Compose for prod/staging
 ├── terraform/         # Infrastructure as Code
 ├── .devcontainer/     # Development environment
@@ -44,6 +48,7 @@ kraeuterakademie.it/
 
  - [kraeuterakademie.it_nuxt](https://github.com/FelixRizzolli/kraeuterakademie.it_nuxt) — Nuxt frontend source
  - [kraeuterakademie.it_strapi](https://github.com/FelixRizzolli/kraeuterakademie.it_strapi) — Strapi backend source
+ - [kraeuterakademie.it_payload](https://github.com/FelixRizzolli/kraeuterakademie.it_payload) — Payload backend source
 
 
 ## 🛠️ Development
@@ -55,7 +60,7 @@ kraeuterakademie.it/
 
 ### Environment Variables
 
-- `GH_TOKEN` with access to `kraeuterakademie.it`, `kraeuterakademie.it_nuxt`, and `kraeuterakademie.it_strapi`
+- `GH_TOKEN` with access to `kraeuterakademie.it`, `kraeuterakademie.it_nuxt`, `kraeuterakademie.it_strapi`, and `kraeuterakademie.it_payload`
 - `HCLOUD_API_TOKEN` with access to the Hetzner Cloud API
 
 Both `GH_TOKEN` and `HCLOUD_API_TOKEN` are passed from your local environment to the devcontainer.
@@ -71,13 +76,15 @@ To run the frontend or backend services:
 	- `pnpm storybook` to run Storybook
 - Open the Strapi terminal and run:
 	- `pnpm devcontainer` to start the Strapi CMS backend
+- Open the Payload terminal and run:
+	- `pnpm devcontainer` to start the Payload CMS backend
 
 
 ## 🚀 Deployment
 
 Releases are automated via GitHub Actions:
 
-- When the package version of either the Strapi or Nuxt repository increases, a new tag and release are automatically created.
+- When the package version of either the Payload, Strapi or Nuxt repository increases, a new tag and release are automatically created.
 - Upon release creation, another GitHub Action builds and deploys a new container for that version to the GitHub Container Repository.
 
 
