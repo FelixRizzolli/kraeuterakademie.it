@@ -13,6 +13,10 @@ UP_SCRIPT="$SCRIPT_DIR/up_env.sh"
 DEST_DIR="$HOME/.local/bin"
 LINK_PATH="$DEST_DIR/upenv"
 
+# Optional deploy script and link
+DEPLOY_SCRIPT="$SCRIPT_DIR/deploy.sh"
+DEPLOY_LINK="$DEST_DIR/deploy"
+
 die(){ echo "ERROR: $*" >&2; exit 1; }
 
 if [ ! -f "$UP_SCRIPT" ]; then
@@ -21,6 +25,13 @@ fi
 
 echo "Making $UP_SCRIPT executable..."
 chmod +x "$UP_SCRIPT"
+
+if [ ! -f "$DEPLOY_SCRIPT" ]; then
+  die "deploy.sh not found at $DEPLOY_SCRIPT. Make sure this setup script sits next to deploy.sh"
+fi
+
+echo "Making $DEPLOY_SCRIPT executable..."
+chmod +x "$DEPLOY_SCRIPT"
 
 echo "Creating $DEST_DIR (if needed)..."
 mkdir -p "$DEST_DIR"
@@ -42,6 +53,23 @@ else
   echo "Created symlink: $LINK_PATH -> $UP_SCRIPT"
 fi
 
+# Install deploy symlink the same way
+if [ -e "$DEPLOY_LINK" ]; then
+  if [ -L "$DEPLOY_LINK" ] && [ "$(readlink "$DEPLOY_LINK")" = "$DEPLOY_SCRIPT" ]; then
+    echo "Existing symlink $DEPLOY_LINK already points to $DEPLOY_SCRIPT. Skipping symlink creation."
+  else
+    ts=$(date +%s)
+    backup="$DEPLOY_LINK.bak.$ts"
+    echo "Backing up existing $DEPLOY_LINK -> $backup"
+    mv "$DEPLOY_LINK" "$backup"
+    ln -s "$DEPLOY_SCRIPT" "$DEPLOY_LINK"
+    echo "Created symlink: $DEPLOY_LINK -> $DEPLOY_SCRIPT (previous moved to $backup)"
+  fi
+else
+  ln -s "$DEPLOY_SCRIPT" "$DEPLOY_LINK"
+  echo "Created symlink: $DEPLOY_LINK -> $DEPLOY_SCRIPT"
+fi
+
 # Ensure DEST_DIR is on PATH via ~/.profile (user-level)
 PROFILE="$HOME/.profile"
 EXPORT_LINE='export PATH="$HOME/.local/bin:$PATH"'
@@ -55,9 +83,7 @@ else
 fi
 
 echo
-echo "Setup complete. You can now run:"
-echo "  upenv prod"
-echo "  upenv staging"
+echo "Setup complete."
 echo
 echo "If your shell session doesn't see the new command yet, run:"
 echo "  source $PROFILE"
