@@ -8,11 +8,11 @@
   "workspaceFolder": "/workspace",
 
   "mounts": [
-    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind,consistency=cached"
+    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent/ssh-agent.sock,type=bind,consistency=cached"
   ],
 
   "containerEnv": {
-    "SSH_AUTH_SOCK": "/ssh-agent"
+    "SSH_AUTH_SOCK": "/ssh-agent/ssh-agent.sock"
   },
 
   "postCreateCommand": "bash /root/setup.sh",
