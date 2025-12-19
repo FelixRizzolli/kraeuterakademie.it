@@ -7,12 +7,10 @@
   "remoteUser": "root",
   "workspaceFolder": "/workspace",
 
-  "mounts": [
-    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent/ssh-agent.sock,type=bind,consistency=cached"
-  ],
+  "mounts": ["source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind"],
 
   "containerEnv": {
-    "SSH_AUTH_SOCK": "/ssh-agent/ssh-agent.sock"
+    "SSH_AUTH_SOCK": "/ssh-agent"
   },
 
   "postCreateCommand": "bash /root/setup.sh",
