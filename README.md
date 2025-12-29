@@ -15,9 +15,6 @@ This project demonstrates a modern full-stack web architecture, optimized for ma
 - **Frontend: Nuxt 4**  
 	Utilizes Nuxt 4 for its robust SSR/SSG capabilities, modular architecture, and seamless TypeScript integration. Nuxt's ecosystem accelerates development of performant, SEO-friendly web applications.
 
-- **Backend: Strapi 5**  
-	Strapi 5 provides a flexible, headless CMS with a powerful REST/GraphQL API, enabling rapid content modeling and secure user management. Its plugin system and TypeScript support streamline backend customization.
-
 - **Backend: Payload CMS**  
 	Payload CMS offers a modern, headless CMS solution with a focus on developer experience and extensibility. It supports REST and GraphQL APIs, custom admin interfaces, and robust access control.
 
@@ -36,8 +33,7 @@ This project demonstrates a modern full-stack web architecture, optimized for ma
 kraeuterakademie.it/
 ├── apps/
 │   ├── nuxt/          # Frontend application
-│   └── strapi/        # Headless CMS backend
-│   └── payload/       # (NEXT) Headless CMS backend
+│   └── payload/       # Headless CMS backend
 ├── infrastructure/    # Docker Compose for prod/staging
 ├── terraform/         # Infrastructure as Code
 ├── .devcontainer/     # Development environment
@@ -47,8 +43,11 @@ kraeuterakademie.it/
 #### Subprojects
 
  - [kraeuterakademie.it_nuxt](https://github.com/FelixRizzolli/kraeuterakademie.it_nuxt) — Nuxt frontend source
- - [kraeuterakademie.it_strapi](https://github.com/FelixRizzolli/kraeuterakademie.it_strapi) — Strapi backend source
- - [kraeuterakademie.it_payload](https://github.com/FelixRizzolli/kraeuterakademie.it_payload) — Payload backend source
+ - [kraeuterakademie.it_payload](https://github.com/FelixRizzolli/kraeuterakademie.it_payload) — Payload CMS backend source
+
+#### Archived Subprojects
+
+ - [kraeuterakademie.it_strapi](https://github.com/FelixRizzolli/kraeuterakademie.it_strapi) — Strapi backend (previously used as the CMS backend, now replaced by Payload CMS)
 
 
 ## 🛠️ Development
@@ -74,8 +73,6 @@ To run the frontend or backend services:
 - Open the Nuxt terminal and run:
 	- `pnpm devcontainer` to start the Nuxt frontend
 	- `pnpm storybook` to run Storybook
-- Open the Strapi terminal and run:
-	- `pnpm devcontainer` to start the Strapi CMS backend
 - Open the Payload terminal and run:
 	- `pnpm devcontainer` to start the Payload CMS backend
 

@@ -23,7 +23,7 @@ services:
   nuxt:
     image: ghcr.io/felixrizzolli/kraeuterakademie-it-nuxt:${NUXT_VERSION:-latest}
     environment:
-      STRAPI_API_URL: ${STRAPI_API_URL}
+      PAYLOAD_API_URL: ${PAYLOAD_API_URL}
     healthcheck:
       test:
         [
@@ -42,53 +42,15 @@ services:
     networks:
       - kraeuterakademie
     depends_on:
-      strapi:
-        condition: service_healthy
-
-  strapi:
-    image: ghcr.io/felixrizzolli/kraeuterakademie-it-strapi:${STRAPI_VERSION:-latest}
-    environment:
-      NODE_ENV: ${NODE_ENV:-production}
-      STRAPI_HOST: ${STRAPI_HOST}
-      STRAPI_PORT: ${STRAPI_PORT}
-      DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${STRAPI_DATABASE_NAME}
-      DATABASE_CLIENT: ${DATABASE_CLIENT}
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE_PORT: ${DATABASE_PORT}
-      STRAPI_DATABASE_NAME: ${STRAPI_DATABASE_NAME}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      STRAPI_APP_KEYS: ${STRAPI_APP_KEYS}
-      JWT_SECRET: ${STRAPI_JWT_SECRET}
-      STRAPI_ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
-      STRAPI_API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
-      STRAPI_TRANSFER_TOKEN_SALT: ${STRAPI_TRANSFER_TOKEN_SALT}
-      STRAPI_ENCRYPTION_KEY: ${STRAPI_ENCRYPTION_KEY}
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://${STRAPI_HOST}:${STRAPI_PORT}/_health",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-    restart: unless-stopped
-    networks:
-      - kraeuterakademie
-    depends_on:
-      database:
+      payload:
         condition: service_healthy
 
   payload:
     image: ghcr.io/felixrizzolli/kraeuterakademie-it-payload:${PAYLOAD_VERSION:-latest}
     environment:
       NODE_ENV: ${NODE_ENV:-production}
+      PAYLOAD_HOST: ${PAYLOAD_HOST}
+      PAYLOAD_PORT: ${PAYLOAD_PORT}
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
       PAYLOAD_DATABASE_URI: ${PAYLOAD_DATABASE_URI}
     healthcheck:
@@ -99,7 +61,7 @@ services:
           "--no-verbose",
           "--tries=1",
           "--spider",
-          "http://localhost:3001/_health",
+          "http://${PAYLOAD_HOST}:${PAYLOAD_PORT}/api/health",
         ]
       interval: 30s
       timeout: 10s
@@ -138,12 +100,6 @@ volumes:
       type: none
       o: bind
       device: /var/lib/docker-volumes/kraeuterakademie.it/${ENVIRONMENT:-production}/postgres
-  strapi-uploads:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /var/lib/docker-volumes/kraeuterakademie.it/${ENVIRONMENT:-production}/strapi-uploads
   letsencrypt-data:
     driver: local
     driver_opts:

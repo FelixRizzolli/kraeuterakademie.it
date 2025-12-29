@@ -8,23 +8,10 @@ services:
       - "traefik.http.routers.nuxt-staging.tls.certresolver=letsencrypt"
       - "traefik.http.services.nuxt-staging.loadbalancer.server.port=3000"
 
-  strapi:
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.strapi-staging.rule=Host(`api-staging.kraeuterakademie.it`)"
-      - "traefik.http.routers.strapi-staging.entrypoints=websecure"
-      - "traefik.http.routers.strapi-staging.tls.certresolver=letsencrypt"
-      - "traefik.http.services.strapi-staging.loadbalancer.server.port=1337"
-    volumes:
-      - strapi-uploads:/opt/app/public/uploads
-    environment:
-      STRAPI_DATABASE_NAME: kraeuterakademie_staging
-      ENVIRONMENT: staging
-
   payload:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.payload-staging.rule=Host(`payload-staging.kraeuterakademie.it`)"
+      - "traefik.http.routers.payload-staging.rule=Host(`api-staging.kraeuterakademie.it`)"
       - "traefik.http.routers.payload-staging.entrypoints=websecure"
       - "traefik.http.routers.payload-staging.tls.certresolver=letsencrypt"
       - "traefik.http.services.payload-staging.loadbalancer.server.port=3001"

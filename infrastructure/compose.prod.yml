@@ -35,28 +35,10 @@ services:
     networks:
       - kraeuterakademie
 
-  strapi:
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.strapi.rule=Host(`api.kraeuterakademie.it`)"
-      - "traefik.http.routers.strapi.entrypoints=websecure"
-      - "traefik.http.routers.strapi.tls.certresolver=letsencrypt"
-      - "traefik.http.services.strapi.loadbalancer.server.port=1337"
-    volumes:
-      - strapi-uploads:/opt/app/public/uploads
-    deploy:
-      resources:
-        limits:
-          memory: 768M
-        reservations:
-          memory: 512M
-    environment:
-      ENVIRONMENT: production
-
   payload:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.payload.rule=Host(`payload.kraeuterakademie.it`)"
+      - "traefik.http.routers.payload.rule=Host(`api.kraeuterakademie.it`)"
       - "traefik.http.routers.payload.entrypoints=websecure"
       - "traefik.http.routers.payload.tls.certresolver=letsencrypt"
       - "traefik.http.services.payload.loadbalancer.server.port=3001"
