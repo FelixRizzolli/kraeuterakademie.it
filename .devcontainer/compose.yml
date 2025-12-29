@@ -15,11 +15,9 @@ services:
       - ../:/workspace
       # Mount the setup.sh script to the container
       - ./setup.sh:/root/setup.sh
-      # Mount Strapi uploads volume
-      - strapi-uploads:/srv/app/public/uploads
     ports:
-      - 1337:1337
       - 3000:3000
+      - 6006:6006
       - 3001:3001
     networks:
       - default
@@ -47,12 +45,6 @@ volumes:
       type: none
       o: bind
       device: ./data/postgres
-  strapi-uploads:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./data/strapi-uploads
 
 networks:
   default:

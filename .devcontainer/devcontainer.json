@@ -57,14 +57,18 @@
     }
   },
 
-  "forwardPorts": [3000, 1337],
+  "forwardPorts": [3000, 6006, 3001],
   "portsAttributes": {
     "3000": {
       "label": "Nuxt",
       "onAutoForward": "notify"
     },
-    "1337": {
-      "label": "Strapi",
+    "6006": {
+      "label": "Storybook",
+      "onAutoForward": "notify"
+    },
+    "3001": {
+      "label": "Payload",
       "onAutoForward": "notify"
     }
   }
