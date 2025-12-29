@@ -53,20 +53,20 @@ services:
       PAYLOAD_PORT: ${PAYLOAD_PORT}
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
       PAYLOAD_DATABASE_URI: ${PAYLOAD_DATABASE_URI}
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://${PAYLOAD_HOST}:${PAYLOAD_PORT}/api/health",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
+    # healthcheck:
+    #   test:
+    #     [
+    #       "CMD",
+    #       "wget",
+    #       "--no-verbose",
+    #       "--tries=1",
+    #       "--spider",
+    #       "http://${PAYLOAD_HOST}:${PAYLOAD_PORT}/api/health",
+    #     ]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 60s
     restart: unless-stopped
     networks:
       - kraeuterakademie
