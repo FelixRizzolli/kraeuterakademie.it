@@ -42,8 +42,9 @@ services:
     networks:
       - kraeuterakademie
     depends_on:
-      payload:
-        condition: service_healthy
+      - payload
+      # payload:
+      #   condition: service_healthy
 
   payload:
     image: ghcr.io/felixrizzolli/kraeuterakademie-it-payload:${PAYLOAD_VERSION:-latest}
