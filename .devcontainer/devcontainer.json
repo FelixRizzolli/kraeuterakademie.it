@@ -7,12 +7,6 @@
   "remoteUser": "root",
   "workspaceFolder": "/workspace",
 
-  "mounts": ["source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent,type=bind"],
-
-  "containerEnv": {
-    "SSH_AUTH_SOCK": "/ssh-agent"
-  },
-
   "postCreateCommand": "bash /root/setup.sh",
 
   "customizations": {
@@ -53,6 +47,19 @@
         /* Git */
         "eamodio.gitlens",
         "mhutchie.git-graph"
+      ]
+    },
+    "jetbrains": {
+      "plugins": [
+        /* Monorepo & Infrastructure */
+        "org.jetbrains.plugins.workspace",
+        "org.intellij.plugins.hcl",
+
+        /* Nuxt/Vue */
+        "com.apollographql.ijplugin",
+
+        /* Productivity */
+        "com.github.copilot"
       ]
     }
   },
