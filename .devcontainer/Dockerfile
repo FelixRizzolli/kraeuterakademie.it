@@ -17,6 +17,9 @@ RUN echo "INSTALL KRAEUTERAKADEMIE DEVCONTAINER IMAGE" && \
     (type -p wget >/dev/null || (apt-get install wget -y)) && \
     (type -p unzip >/dev/null || (apt-get install unzip -y)) && \
     (type -p lsb-release >/dev/null || (apt-get install lsb-release -y)) && \
+    # Install JDK 25 for JetBrains IDEs
+    apt-get update && apt-get install -y --no-install-recommends openjdk-25-jdk-headless && \
+    rm -rf /var/lib/apt/lists/* && \
     # Install PostgreSQL
     install -d /usr/share/postgresql-common/pgdg && \
     curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
