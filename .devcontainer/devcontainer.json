@@ -1,5 +1,5 @@
 {
-  "name": "Dev Container",
+  "name": "kraeuterakademie.it - Monorepo",
   "dockerComposeFile": "./compose.yml",
   "service": "devcontainer",
   "shutdownAction": "none",
