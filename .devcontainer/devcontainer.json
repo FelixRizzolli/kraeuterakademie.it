@@ -2,7 +2,7 @@
   "name": "kraeuterakademie.it - Monorepo",
   "dockerComposeFile": "./compose.yml",
   "service": "devcontainer",
-  "shutdownAction": "none",
+  "shutdownAction": "stopCompose",
 
   "remoteUser": "root",
   "workspaceFolder": "/workspace",
