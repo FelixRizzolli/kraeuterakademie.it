@@ -3,8 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/apps/nuxt" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/apps/nuxt-backup" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/apps/payload" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/apps/strapi" vcs="Git" />
   </component>
 </project>
