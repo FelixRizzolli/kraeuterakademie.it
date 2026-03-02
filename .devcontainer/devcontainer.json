@@ -23,6 +23,15 @@
     "WORKSPACE_FOLDER": "${containerWorkspaceFolder}"
   },
 
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false
+    },
+    "ghcr.io/itsmechlark/features/postgresql:1": {},
+    "ghcr.io/devcontainers/features/terraform:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
   "customizations": {
     "vscode": {
       "extensions": [
