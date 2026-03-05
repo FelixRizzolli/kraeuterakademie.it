@@ -83,7 +83,10 @@
         "com.apollographql.ijplugin",
 
         /* Productivity */
-        "com.github.copilot"
+        "com.github.copilot",
+
+        /* Code Quality */
+        "com.github.oxc.project.oxcintellijplugin"
       ]
     }
   },
