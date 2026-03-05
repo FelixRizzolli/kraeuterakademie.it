@@ -1,13 +1,14 @@
 # environment files
 infrastructure/.env.*
 
-# data
+# data & mounts
 data/
 !.devcontainer/data
 .devcontainer/data/postgres/*
 !.devcontainer/data/postgres/.gitkeep
 .devcontainer/data/strapi-uploads/*
 !.devcontainer/data/strapi-uploads/.gitkeep
+.devcontainer/mounts
 
 # apps
 apps/
