@@ -1,5 +1,6 @@
 services:
   devcontainer:
+    container_name: kraeuterakademie_devcontainer
     build:
       context: .
       dockerfile: Dockerfile
@@ -24,15 +25,15 @@ services:
     command: ["sleep", "infinity"]
 
   database:
+    container_name: kraeuterakademie_database
     image: postgres:18.1
     restart: always
     environment:
-      DATABASE_NAMES: ${DATABASE_NAMES}
+      POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql
-      - ../scripts/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     ports:
       - 5432:5432
     networks:
