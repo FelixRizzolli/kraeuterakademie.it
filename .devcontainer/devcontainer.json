@@ -77,9 +77,10 @@
         /* Monorepo & Infrastructure */
         "org.jetbrains.plugins.workspace",
         "org.intellij.plugins.hcl",
+        "ru.adelf.idea.dotenv",
 
         /* Nuxt/Vue */
-        "com.apollographql.ijplugin",
+        "com.intellij.lang.jsgraphql",
 
         /* Productivity */
         "com.github.copilot",
