@@ -1,27 +1,105 @@
 name: Automated Deployment
 
 on:
+  # Triggered by sub-project build workflows via repository_dispatch.
+  # The client_payload may carry a `version` field (e.g. "sha-abc1234")
+  # so we deploy a pinned image instead of blindly pulling :latest.
+  #
+  # Example dispatch from a build workflow:
+  #   - uses: peter-evans/repository-dispatch@v3
+  #     with:
+  #       event-type: api-updated
+  #       client-payload: '{"version": "${{ github.sha }}"}'
   repository_dispatch:
     types: [nuxt-updated, payload-updated]
+
+  # Manual trigger with explicit service + optional version override
   workflow_dispatch:
     inputs:
       service:
+        description: "Service to deploy"
         type: choice
-        options: [all, nuxt, storybook, payload]
+        options: [all, nuxt, payload]
         default: all
+      version:
+        description: "Docker image tag to deploy (leave empty for 'latest')"
+        type: string
+        default: ""
 
 concurrency:
-  # Ensure only one run of this workflow executes at a time; subsequent runs will wait (queue)
+  # Only one deployment at a time; subsequent runs queue up rather than cancel.
   group: deploy-${{ github.workflow }}
   cancel-in-progress: false
 
 jobs:
   deploy:
+    name: Deploy ${{ github.event.action || inputs.service }}
     runs-on: ubuntu-latest
     environment: production
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - name: Resolve service name and version
+        id: params
+        run: |
+          # Map repository_dispatch event types → service names
+          EVENT="${{ github.event.action || inputs.service }}"
+          case "$EVENT" in
+            nuxt-updated)       SERVICE="nuxt"      ;;
+            payload-updated)    SERVICE="payload"   ;;
+            *)                  SERVICE="$EVENT"    ;;
+          esac
+
+          # Version: prefer client_payload from repository_dispatch, then
+          # workflow_dispatch input, then fall back to "latest"
+          VERSION="${{ github.event.client_payload.version || inputs.version }}"
+          VERSION="${VERSION:-latest}"
+
+          echo "service=$SERVICE"   >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION"   >> "$GITHUB_OUTPUT"
+          echo "Deploying $SERVICE @ $VERSION"
+
+      # -----------------------------------------------------------------------
+      # Assemble .env.prod from two sources:
+      #
+      #   1. The PROD_ENV secret  – sensitive values (DB credentials, API
+      #      secrets, etc.) managed as a single encrypted blob.
+      #
+      #   2. GitHub environment variables – non-sensitive configuration
+      #      (domain names, feature flags) managed individually so they
+      #      are auditable and easy to update without touching the secret.
+      #
+      # Variables appended in step 2 override any duplicate keys from step 1.
+      # -----------------------------------------------------------------------
+      - name: Generate environment file
+        env:
+          PROD_ENV: ${{ secrets.PROD_ENV }}
+        run: |
+          # 1. Write the sensitive secrets blob.
+          #    Using env: instead of inline ${{ }} correctly handles
+          #    multiline values and special characters.
+          printf '%s\n' "$PROD_ENV" > .env.prod
+
+          # 2. Append GitHub environment variables.
+          #    These override any duplicate keys from the blob above.
+          cat >> .env.prod << EOF
+
+          # --- Managed as GitHub environment variables ---
+          ACME_EMAIL=${{ vars.ACME_EMAIL }}
+          TRAEFIK_DASHBOARD_DOMAIN=${{ vars.TRAEFIK_DASHBOARD_DOMAIN }}
+          PAYLOAD_DOMAIN=${{ vars.PAYLOAD_DOMAIN }}
+          NUXT_DOMAIN=${{ vars.NUXT_DOMAIN }}
+          STORYBOOK_DOMAIN=${{ vars.STORYBOOK_DOMAIN }}
+          EOF
+
+      - name: Upload environment file to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: ".env.prod"
+          target: "/var/www/kraeuterakademie.it/infrastructure/"
+          overwrite: true
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.3
@@ -29,19 +107,33 @@ jobs:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
           script: |
-            # Map event types nuxt-updated and payload-updated to nuxt and payload
-            SERVICE="${{ github.event.action || inputs.service }}"
-            if [ "$SERVICE" = "nuxt-updated" ]; then
-              SERVICE="nuxt"
-            elif [ "$SERVICE" = "payload-updated" ]; then
-              SERVICE="payload"
-            fi
-            bash /var/www/kraeuterakademie.it/scripts/deploy.sh "$SERVICE"
+            bash /var/www/kraeuterakademie.it/scripts/deploy.sh \
+              "${{ steps.params.outputs.service }}" \
+              "${{ steps.params.outputs.version }}"
 
       - name: Health check
         run: |
-          sleep 30
-          curl -f https://kraeuterakademie.it || exit 1
-          curl -f https://api.kraeuterakademie.it/_health || exit 1
-          curl -f https://payload.kraeuterakademie.it/_health || exit 1
+          echo "Waiting for services to come up..."
+          sleep 15
+
+          check() {
+            local url="$1"
+            local attempts=5
+            local delay=10
+            for i in $(seq 1 "$attempts"); do
+              if curl -fsSL --max-time 10 "$url" > /dev/null 2>&1; then
+                echo "✓  $url"
+                return 0
+              fi
+              echo "   ($i/$attempts) $url not ready, retrying in ${delay}s..."
+              sleep "$delay"
+            done
+            echo "✗  $url unreachable after $attempts attempts" >&2
+            return 1
+          }
+
+          check "https://kraeuterakademie.it"
+          check "https://www.kraeuterakademie.it"
+          check "https://api.kraeuterakademie.it/_health"
