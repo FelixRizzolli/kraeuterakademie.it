@@ -1,0 +1,39 @@
+services:
+  storybook:
+    container_name: "kraeuterakademie-it-storybook"
+    image: ghcr.io/felixrizzolli/kraeuterakademie-it-storybook:${STORYBOOK_VERSION:-latest}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.storybook.rule=Host(`${STORYBOOK_DOMAIN}`)"
+      - "traefik.http.routers.storybook.entrypoints=websecure"
+      - "traefik.http.routers.storybook.tls.certresolver=letsencrypt"
+      - "traefik.http.services.storybook.loadbalancer.server.port=${STORYBOOK_PORT}"
+    env_file:
+      - path: ./.env.prod
+        required: true
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://${STORYBOOK_HOST}:${STORYBOOK_PORT}",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    restart: unless-stopped
+    networks:
+      - traefik-public
+    depends_on:
+      api:
+        condition: service_healthy

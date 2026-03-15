@@ -1,0 +1,39 @@
+services:
+  nuxt:
+    container_name: "kraeuterakademie-it-nuxt"
+    image: ghcr.io/felixrizzolli/kraeuterakademie-it-nuxt:${NUXT_VERSION:-latest}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nuxt.rule=Host(`${NUXT_DOMAIN}`) || Host(`www.${NUXT_DOMAIN}`)"
+      - "traefik.http.routers.nuxt.entrypoints=websecure"
+      - "traefik.http.routers.nuxt.tls.certresolver=letsencrypt"
+      - "traefik.http.services.nuxt.loadbalancer.server.port=${NUXT_PORT}"
+    env_file:
+      - path: ./.env.prod
+        required: true
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://${NUXT_HOST}:${NUXT_PORT}",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    restart: unless-stopped
+    networks:
+      - traefik-public
+    depends_on:
+      api:
+        condition: service_healthy

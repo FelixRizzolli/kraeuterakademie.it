@@ -1,0 +1,44 @@
+services:
+  payload:
+    container_name: "kraeuterakademie-it-payload"
+    image: ghcr.io/felixrizzolli/kraeuterakademie-it-payload:${PAYLOAD_VERSION:-latest}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.payload.rule=Host(`${PAYLOAD_DOMAIN}`)"
+      - "traefik.http.routers.payload.entrypoints=websecure"
+      - "traefik.http.routers.payload.tls.certresolver=letsencrypt"
+      - "traefik.http.services.payload.loadbalancer.server.port=${PAYLOAD_PORT}"
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+    env_file:
+      - path: ./.env.prod
+        required: true
+    volumes:
+      - payload-data:/app/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://${PAYLOAD_HOST}:${PAYLOAD_PORT}/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    restart: unless-stopped
+    networks:
+      - traefik-public # Traefik routes HTTPS traffic here
+      - kraeuterakademie # Database access
+    depends_on:
+      database:
+        condition: service_healthy
