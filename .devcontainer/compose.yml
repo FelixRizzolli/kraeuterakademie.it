@@ -26,7 +26,7 @@ services:
 
   database:
     container_name: kraeuterakademie_database
-    image: postgres:18.1
+    image: postgres:18.3
     restart: always
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
