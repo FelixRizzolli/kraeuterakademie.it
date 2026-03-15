@@ -10,13 +10,8 @@
   "postCreateCommand": "bash /root/setup.sh",
 
   "mounts": [
-    "type=bind,source=${env:SSH_AUTH_SOCK},target=/ssh-agent",
     "source=${localWorkspaceFolder}/.devcontainer/mounts/.jbdevcontainer/config,target=/.jbdevcontainer/config,type=bind"
   ],
-
-  "containerEnv": {
-    "SSH_AUTH_SOCK": "/ssh-agent"
-  },
 
   "remoteEnv": {
     "WORKSPACE_FOLDER": "${containerWorkspaceFolder}"
@@ -78,6 +73,7 @@
         "org.jetbrains.plugins.workspace",
         "org.intellij.plugins.hcl",
         "ru.adelf.idea.dotenv",
+        "com.github.xepozz.gitattributes",
 
         /* Nuxt/Vue */
         "com.intellij.lang.jsgraphql",
