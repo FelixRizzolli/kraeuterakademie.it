@@ -2,12 +2,12 @@ name: Automated Deployment
 
 on:
   repository_dispatch:
-    types: [nuxt-updated, strapi-updated, payload-updated]
+    types: [nuxt-updated, payload-updated]
   workflow_dispatch:
     inputs:
       service:
         type: choice
-        options: [all, nuxt, strapi, storybook, payload]
+        options: [all, nuxt, storybook, payload]
         default: all
 
 concurrency:
@@ -29,14 +29,11 @@ jobs:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script_stop: true
           script: |
-            # Map event types nuxt-updated and strapi-updated to nuxt and strapi
+            # Map event types nuxt-updated and payload-updated to nuxt and payload
             SERVICE="${{ github.event.action || inputs.service }}"
             if [ "$SERVICE" = "nuxt-updated" ]; then
               SERVICE="nuxt"
-            elif [ "$SERVICE" = "strapi-updated" ]; then
-              SERVICE="strapi"
             elif [ "$SERVICE" = "payload-updated" ]; then
               SERVICE="payload"
             fi
@@ -47,5 +44,4 @@ jobs:
           sleep 30
           curl -f https://kraeuterakademie.it || exit 1
           curl -f https://api.kraeuterakademie.it/_health || exit 1
-          curl -f https://strapi.kraeuterakademie.it/_health || exit 1
           curl -f https://payload.kraeuterakademie.it/_health || exit 1
