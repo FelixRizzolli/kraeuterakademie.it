@@ -33,16 +33,21 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy ${{ github.event.action || inputs.service }}
+    name: Deploy
     runs-on: ubuntu-latest
     environment: production
 
     steps:
       - name: Resolve service name and version
         id: params
+        env:
+          GH_EVENT_ACTION: ${{ github.event.action }}
+          INPUT_SERVICE: ${{ inputs.service }}
+          CLIENT_PAYLOAD_VERSION: ${{ github.event.client_payload.version }}
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
           # Map repository_dispatch event types → service names
-          EVENT="${{ github.event.action || inputs.service }}"
+          EVENT="${GH_EVENT_ACTION:-$INPUT_SERVICE}"
           case "$EVENT" in
             nuxt-updated)       SERVICE="nuxt"      ;;
             payload-updated)    SERVICE="payload"   ;;
@@ -51,7 +56,7 @@ jobs:
 
           # Version: prefer client_payload from repository_dispatch, then
           # workflow_dispatch input, then fall back to "latest"
-          VERSION="${{ github.event.client_payload.version || inputs.version }}"
+          VERSION="${CLIENT_PAYLOAD_VERSION:-$INPUT_VERSION}"
           VERSION="${VERSION:-latest}"
 
           echo "service=$SERVICE"   >> "$GITHUB_OUTPUT"
