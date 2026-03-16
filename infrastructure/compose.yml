@@ -3,6 +3,7 @@
 # across all projects on this server.
 services:
   database:
+    container_name: "kraeuterakademie-it-database"
     image: postgres:18.3
     environment:
       DATABASE_NAMES: ${DATABASE_NAMES}
@@ -28,12 +29,6 @@ volumes:
       type: none
       o: bind
       device: /var/lib/docker-volumes/kraeuterakademie.it/${ENVIRONMENT:-production}/postgres
-  letsencrypt-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /var/lib/docker-volumes/kraeuterakademie.it/letsencrypt
   payload-data:
     driver: local
     driver_opts:
