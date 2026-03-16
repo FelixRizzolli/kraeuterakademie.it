@@ -58,9 +58,17 @@ if [ ! -f "$ENV_FILE" ]; then
 fi
 
 COMPOSE_BASE=(
+  # -p pins every docker compose call to the "kraeuterakademie" project name.
+  # Without this, Docker Compose falls back to the directory name
+  # ("infrastructure"), which is identical for every project on the server.
+  # That collision would make Docker Compose treat containers from other
+  # projects (e.g. felixrizzolli-com, the proxy) as orphans of THIS project
+  # and remove them.  The explicit name here, together with `name:
+  # kraeuterakademie` in compose.yml, guarantees full isolation.
+  "-p" "kraeuterakademie"
   # Note: compose.proxy.yml (Traefik) is intentionally excluded here.
   # The reverse proxy is a standalone service managed by init-server.sh
-  # and shared with other projects on this server
+  # and shared with other projects on this server.
   "-f" "compose.yml"
   "-f" "compose.payload.yml"
   "-f" "compose.nuxt.yml"
@@ -134,11 +142,10 @@ case $SERVICE in
       docker compose "${COMPOSE_BASE[@]}" pull
       echo "--> Starting all services..."
 
-      # NOTE: --remove-orphans is intentionally omitted here.
-      # The reverse proxy (Traefik) is started separately via compose.proxy.yml
-      # and shares the same Docker Compose project directory. Including
-      # --remove-orphans would treat the proxy as an orphan (it is not defined
-      # in COMPOSE_BASE) and silently remove it on every full deployment.
+      # No --remove-orphans: not needed and not desirable.
+      # Cross-project isolation is guaranteed by -p kraeuterakademie in
+      # COMPOSE_BASE; Docker Compose will never see containers from other
+      # projects as orphans of this project.
       docker compose "${COMPOSE_BASE[@]}" up -d --wait --wait-timeout 300
     )
     echo "✓  All services are healthy"
