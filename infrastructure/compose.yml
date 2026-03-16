@@ -42,5 +42,10 @@ volumes:
       device: /var/lib/docker-volumes/kraeuterakademie.it/${ENVIRONMENT:-production}/payload-data
 
 networks:
+  # External network shared with all other projects on this server.
+  # Created once by compose.proxy.yml / init-server.sh.
+  traefik-public:
+    external: true
+  # Internal network for service-to-service communication within this project.
   kraeuterakademie:
     driver: bridge

@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-03-16
+
+
+### Added
+
+- Server initialization workflow (`.github/workflows/server-init.yml`) and the accompanying
+  `scripts/init-server.sh`. This one-time GitHub Actions workflow prepares a fresh server by
+  creating persistent Docker volume directories, uploading the assembled `.env.prod` file and
+  optionally starting the shared Traefik reverse proxy.
+- `scripts/reset-db.sh` — helper script for resetting the local development database (local use only).
+
+### Changed
+
+- The automated deployment workflow (`.github/workflows/deploy.yml`) was simplified: the
+  runtime environment file `.env.prod` is now assembled from the encrypted `PROD_ENV` secret and
+  GitHub environment variables, which removes the need to manually manage environment files on
+  the server. This makes environment configuration auditable and controllable from GitHub.
+- The deploy workflow and related scripts were adjusted so there is no longer a requirement to
+  keep a live interactive connection to the server just to update environment variables — the
+  `PROD_ENV` secret contains the sensitive values and GitHub variables supply non-sensitive
+  overrides.
+- Removed legacy Strapi-related logic from the deployment scripts (cleanup of leftover
+  Strapi handling that remained after the migration to Payload CMS).
+
+### Removed
+
+- Removed unused/stale GitHub environment configurations for staging and prod that were not in
+  active use.
+- Clarified proxy control: starting or skipping the proxy (Traefik) during server
+  initialization is controllable via the `WITH_PROXY` setting in `.env.prod` (managed as a
+  GitHub environment variable). This makes it explicit whether this repository should run the
+  shared proxy container or rely on another project already providing it.
+
+
 ## [1.0.1] - 2025-12-29
 
 ### Changed
