@@ -35,5 +35,5 @@ services:
     networks:
       - traefik-public
     depends_on:
-      api:
+      payload:
         condition: service_healthy
