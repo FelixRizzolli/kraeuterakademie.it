@@ -80,7 +80,7 @@ jobs:
           PROD_ENV: ${{ secrets.PROD_ENV }}
         run: |
           # 1. Write the sensitive secrets blob.
-          #    Using env: instead of inline ${{ }} correctly handles
+          #    Using env: instead of inline expressions correctly handles
           #    multiline values and special characters.
           printf '%s\n' "$PROD_ENV" > .env.prod
 
