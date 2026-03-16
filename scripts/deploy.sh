@@ -133,7 +133,13 @@ case $SERVICE in
       export STORYBOOK_VERSION=$VERSION
       docker compose "${COMPOSE_BASE[@]}" pull
       echo "--> Starting all services..."
-      docker compose "${COMPOSE_BASE[@]}" up -d --wait --wait-timeout 300 --remove-orphans
+
+      # NOTE: --remove-orphans is intentionally omitted here.
+      # The reverse proxy (Traefik) is started separately via compose.proxy.yml
+      # and shares the same Docker Compose project directory. Including
+      # --remove-orphans would treat the proxy as an orphan (it is not defined
+      # in COMPOSE_BASE) and silently remove it on every full deployment.
+      docker compose "${COMPOSE_BASE[@]}" up -d --wait --wait-timeout 300
     )
     echo "✓  All services are healthy"
     ;;
@@ -145,10 +151,25 @@ esac
 
 # ---------------------------------------------------------------------------
 # 4. Post-deploy cleanup
+#    Only remove dangling (superseded) images that belong to this project.
+#    Global `docker image prune` is intentionally avoided to prevent
+#    accidentally cleaning up images from the proxy or other projects.
 # ---------------------------------------------------------------------------
 echo ""
-echo "==> Cleaning up dangling images..."
-docker image prune -f
+echo "==> Cleaning up old project images..."
+for repo in \
+  "ghcr.io/felixrizzolli/kraeuterakademie-it-payload" \
+  "ghcr.io/felixrizzolli/kraeuterakademie-it-nuxt" \
+  "ghcr.io/felixrizzolli/kraeuterakademie-it-storybook"; do
+
+  # Collect image IDs for this repo that are no longer tagged (dangling).
+  # After a pull the old image loses its tag and shows as <none> for that repo.
+  mapfile -t old_ids < <(docker images "$repo" --filter "dangling=true" -q 2>/dev/null || true)
+  for id in "${old_ids[@]}"; do
+    echo "   Removing old image: $repo ($id)"
+    docker rmi "$id" 2>/dev/null || true
+  done
+done
 
 echo ""
 echo "==> Deployment complete. Current status:"
